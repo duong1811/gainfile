@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trackify Next.js - Official Documentation</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Setup Sidebar Navigation -->
+    <aside class="sidebar">
+        <h2>Trackify Next.js</h2>
+        <nav>
+            <a href="#intro" class="nav-link active">1. Introduction</a>
+            <a href="#installation" class="nav-link">2. Installation</a>
+            <a href="#structure" class="nav-link">3. Folder Structure</a>
+            <a href="#theming" class="nav-link">4. Theming & Colors</a>
+            <a href="#routing" class="nav-link">5. Routing & Pages</a>
+            <a href="#components" class="nav-link">6. UI Components</a>
+            <a href="#credits" class="nav-link">7. Credits & Libraries</a>
+            <a href="#changelog" class="nav-link">8. Changelog</a>
+            <a href="#support" class="nav-link">9. Support Help</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <section id="intro">
+            <span class="badge">Docs Version 1.1</span>
+            <h1>Welcome to Trackify Next.js</h1>
+            <p>Thank you for downloading <strong>Trackify Next.js</strong>. This official document explains how to install,
+                configure, map logic, and deeply customize your new premium Next.js dashboard template.</p>
+            <p>Trackify is built on highly optimized modern web technologies including <strong>Next.js 16 (App Router), React 19, Tailwind
+                    CSS, Framer Motion, and QuestLabs React SDK</strong>. It features a stunning "Aurora Glassmorphism" UI, built-in dynamic
+                Dark/Light modes, RTL (Right-to-Left) direction layout support, and over 65+ fully coded application
+                pages ranging from Kanban Taskboards and Sales CRMs to IT Asset Trackers and Financial Invoices. Version 1.1 introduces 6 additional specialized modules including AI-driven Predictive Insights and Wellness monitoring.</p>
+        </section>
+
+        <section id="installation">
+            <h2>Installation & Setup</h2>
+            <p>Follow these quick steps to get a local development server running seamlessly right on your machine.</p>
+
+            <h3>Prerequisites</h3>
+            <p>You must have <strong>Node.js</strong> (v18.0 or higher) installed on your system.</p>
+
+            <h3>1. Unzip and Open</h3>
+            <p>Extract the downloaded ThemeForest ZIP archive and open your terminal or command prompt. You must 
+                <code>cd code</code> to enter the subdirectory where <code>package.json</code> is located.</p>
+
+            <h3>2. Install NPM Dependencies</h3>
+            <p>Run the following command to download all necessary NPM library packages. This might take a few minutes:
+            </p>
+            <pre><code>npm install</code></pre>
+            <p>Alternatively, if you prefer Yarn:</p>
+            <pre><code>yarn install</code></pre>
+
+            <h3>3. Run Local Development Server</h3>
+            <p>Start the Next.js development engine. It automatically recompiles whenever you save a file (HMR):</p>
+            <pre><code>npm run dev</code></pre>
+            <p>Navigate to <a href="http://localhost:3000" style="color:var(--primary)">http://localhost:3000</a> in
+                your web browser.</p>
+
+            <h3>4. Build & Start for Production</h3>
+            <p>To generate a highly optimized Next.js production build, run:
+            </p>
+            <pre><code>npm run build</code></pre>
+            <p>To start the production server locally, run:</p>
+            <pre><code>npm run start</code></pre>
+        </section>
+
+        <section id="structure">
+            <h2>Folder & Architecture Structure</h2>
+            <p>We adamantly believe in keeping things organized, scalable, and intuitive. Here is how your completely
+                modular Next.js App Router project is arranged:</p>
+            <pre><code>trackify/
+├── code/                       # Main Next.js Source Project
+│   ├── public/                 # Static assets (favicons, images)
+│   ├── src/
+│   │   ├── app/                # Next.js App Router (Layouts & Pages)
+│   │   │   ├── (dashboard)/    # Dashboard layout and routes
+│   │   │   ├── layout.js       # Root HTML Layout
+│   │   │   ├── providers.jsx   # Client-side Theme Providers wrapper
+│   │   │   └── page.jsx        # Root landing page redirect
+│   │   ├── components/         # Global shared UI components (Sidebar, Topbar, etc.)
+│   │   ├── context/            # Global Theme & State Contexts
+│   │   ├── lib/                # Utility libraries & helper functions (CVA, utilities)
+│   │   └── views/              # Page view components
+│   ├── next.config.mjs         # Next.js configuration
+│   ├── package.json            # Node dependencies & scripts
+│   └── tailwind.config.js      # Tailwind configuration
+└── documentation/              # Contains these docs (HTML, CSS)</code></pre>
+        </section>
+
+        <section id="theming">
+            <h2>Custom Theming & Brand Colors</h2>
+            <p>Trackify does not rely heavily on massive Tailwind Config overwrites for color swaps. Instead, we rely
+                purely on the speed of <strong>native CSS Variables</strong> mapped directly into Tailwind utility
+                classes via <code>src/index.css</code>. This drastically reduces JavaScript overhead and allows instantaneous
+                switching between themes natively through the browser renderer.</p>
+
+            <h3>Editing Colors</h3>
+            <p>Navigate to <code>src/index.css</code>. You will find the root CSS tokens:</p>
+            <pre><code>:root {
+  /* Default to dark theme values */
+  --aurora-1: #4f46e5;
+  --aurora-2: #7c3aed;
+  --aurora-3: #2563eb;
+  --aurora-4: #0891b2;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --bg-primary: #030712;
+}
+
+body.light-theme {
+  /* Light Mode Override Values */
+  --aurora-1: #6366f1;
+  --aurora-2: #8b5cf6;
+  --aurora-3: #3b82f6;
+  --aurora-4: #06b6d4;
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --bg-primary: #f8fafc;
+}</code></pre>
+            <p>Simply change the HEX/RGBA codes in these tokens to brand the entire application globally. For
+                instance, modifying <code>--aurora-1</code> to a Hex color of your brand instantly updates thousands of
+                components mapping to that variable.</p>
+
+            <h3>Dark Mode & RTL Global Context API State</h3>
+            <p>We handle complex layout states via <code>src/context/ThemeContext.jsx</code>. Inside any component, you
+                can trigger UI shifts by accessing properties provided via the custom hook:
+                <code>const { isDarkMode, toggleTheme, isRTL, toggleDirection, isSidebarCollapsed, toggleSidebar } = useTheme();</code>
+            </p>
+        </section>
+
+        <section id="routing">
+            <h2>Next.js App Router & Adding New Pages</h2>
+            <p>Logical routing is handled via folder-based routing inside the Next.js <code>src/app</code> directory.</p>
+            <p>We use route groups and layouts to structure our application. For example, dashboard pages are placed inside the <code>(dashboard)</code> folder group, which applies the dashboard layout (Sidebar, Topbar, and aurora background animation) defined in <code>src/app/(dashboard)/layout.jsx</code>. Authentication pages (like <code>/login</code> or <code>/register</code>) bypass the dashboard layout since they are situated outside the <code>(dashboard)</code> folder structure.</p>
+
+            <h3>How to add your own brand new page:</h3>
+            <ol>
+                <li>Create a new directory inside the dashboard route group, e.g., <code>src/app/(dashboard)/your-new-page</code>.</li>
+                <li>Create a <code>page.jsx</code> file inside that directory:
+                    <pre><code>"use client";
+import React from 'react';
+// Import your custom view or write JSX directly
+export default function Page() {
+  return &lt;div&gt;Your Page Content&lt;/div&gt;;
+}</code></pre>
+                </li>
+                <li>The page will be automatically mapped to the URL route: <code>/your-new-page</code>.</li>
+                <li>Open <code>src/components/Sidebar.jsx</code> and append a subItem/Item inside the
+                    <code>menuItems</code> array to make it accessible in the sidebar navigation interface.</li>
+            </ol>
+        </section>
+
+        <section id="components">
+            <h2>Standardized UI Component Library (CVA)</h2>
+            <p>Trackify features a high-fidelity, modular UI library built using <strong>Class Variance Authority (CVA)</strong>. This allows for a declarative, variant-aware component system that ensures strict design consistency while providing maximum flexibility for developers.</p>
+
+            <div class="feature-grid">
+                <div class="card">
+                    <h4>Variant-Aware Components</h4>
+                    <p>Core components like Buttons, Badges, Cards, and Inputs now support standardized variants (primary, glass, aurora, danger) through a clean, prop-driven API.</p>
+                </div>
+                <div class="card">
+                    <h4>Advanced Interactive Modules</h4>
+                    <p>Highly optimized Dropdowns, Modals, and Tooltips with managed stacking contexts (z-index) and overflow-aware rendering for seamless UX.</p>
+                </div>
+                <div class="card">
+                    <h4>Framer Motion Integration</h4>
+                    <p>Every component is wrapped with physics-based micro-animations, providing a tactile and premium feel to all user interactions.</p>
+                </div>
+                <div class="card">
+                    <h4>Glassmorphic Design Tokens</h4>
+                    <p>Direct mapping to CSS variables ensures that all components respect the global "Aurora" design language across both Dark and Light modes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="credits">
+            <h2>Credits, Fonts & Vendor Libraries</h2>
+            <p>We extensively leverage established open-source solutions to deliver maximum quality and developmental
+                iteration flexibility:</p>
+            <ul>
+                <li><strong>Next.js 16 Framework:</strong> https://nextjs.org/</li>
+                <li><strong>React 19 Architecture:</strong> https://react.dev/</li>
+                <li><strong>Tailwind CSS Framework v3:</strong> https://tailwindcss.com/</li>
+                <li><strong>Framer Motion Physics Runtime:</strong> https://framer.com/motion/</li>
+                <li><strong>QuestLabs React SDK:</strong> https://questlabs.ai/</li>
+                <li><strong>Icons by Remix Icon (React Wrapper):</strong>
+                    https://react-icons.github.io/react-icons/icons?name=ri</li>
+                <li><strong>System Fonts:</strong> Geist Sans & Geist Mono loaded natively using <code>next/font/google</code>.</li>
+            </ul>
+        </section>
+
+        <section id="changelog">
+            <h2>Changelog Updates</h2>
+            <p>Stay up to date with the latest versions, feature additions, and fixes released for Trackify.</p>
+
+            <div class="card" style="margin-bottom: 2rem; border-left: 4px solid var(--primary);">
+                <h4>v1.1.0 - Next.js Migration & Architectural Standardization</h4>
+                <p style="font-size: 0.85rem; margin-bottom: 1rem; color: #818cf8; font-weight: 600;">Released:
+                    Early-May 2026</p>
+                <ul>
+                    <li><strong>Architecture:</strong> Fully migrated project to Next.js 16 (App Router) and React 19.</li>
+                    <li><strong>Architecture:</strong> Migrated UI library to Class Variance Authority (CVA) for standardized variant management.</li>
+                    <li><strong>Feature:</strong> Added <strong>AI Insights</strong> page with predictive ECharts forecasting.</li>
+                    <li><strong>Feature:</strong> Added <strong>Marketplace</strong> hub for platform extensions and integrations.</li>
+                    <li><strong>Feature:</strong> Added <strong>Knowledge Base</strong> with categorized documentation and support tools.</li>
+                    <li><strong>Feature:</strong> Added <strong>Focus Room</strong> featuring a futuristic Pomodoro timer and ambient scapes.</li>
+                    <li><strong>Feature:</strong> Added <strong>Wellness Tracker</strong> for sleep, mood, and biological monitoring.</li>
+                    <li><strong>Feature:</strong> Added <strong>Investment Portfolio</strong> for real-time asset and net-worth tracking.</li>
+                    <li><strong>System:</strong> Standardized z-index stacking and overflow management for all overlay components.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem; opacity: 0.7;">
+                <h4>v1.0.0 - Initial Official Release</h4>
+                <p style="font-size: 0.85rem; margin-bottom: 1rem; color: #818cf8; font-weight: 600;">Released:
+                    Late-March 2026</p>
+                <ul>
+                    <li><strong>Feature:</strong> Built core robust architecture using React 18, Vite JS, and Tailwind
+                        CSS.</li>
+                    <li><strong>Feature:</strong> Published 65+ fully coded Premium Application Pages natively (Core
+                        Trackers, Admin Panel, Business CRMs, Organization Suites).</li>
+                    <li><strong>Feature:</strong> Integrated Context API for native Dark Mode and Light Mode toggle
+                        functionality, alongside RTL (Right-to-Left) rendering support.</li>
+                    <li><strong>Feature:</strong> Handcrafted 15 specialized internal interface UI component kits
+                        (Modals, Progress Bars, Complex Outside-Click Dropdowns).</li>
+                    <li><strong>Feature:</strong> Added Framer Motion continuous page transitions and grid list stagger
+                        micro-animations.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="support">
+            <h2>Dedicated Support & Contact</h2>
+            <p>If you encounter unexpected bugs, have installation configuration questions, or need direct assistance
+                modifying an incredibly complex component natively, our team is directly here to help you deploy
+                cleanly!</p>
+
+            <div class="card"
+                style="text-align: center; padding: 3rem 1.5rem; background: rgba(99, 102, 241, 0.05); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 1.5rem;">
+                <h3 style="margin-top: 0; color: #fff; font-size: 1.6rem;">Need Developer Assistance?</h3>
+                <p style="font-size: 1rem; color: #c7d2fe; margin-bottom: 2.5rem;">Shoot an email to our dedicated
+                    technical support desk directly at:</p>
+                <a href="mailto:support@picode.in"
+                    style="display: inline-block; padding: 1.25rem 2.5rem; background: linear-gradient(to right, var(--primary), var(--secondary)); color: #fff; font-weight: bold; border-radius: 99px; text-decoration: none; font-size: 1.2rem; box-shadow: 0 4px 20px rgba(99,102,241,0.4); transition: transform 0.2s; letter-spacing: 0.05em;">
+                    &#9993; support@picode.in
+                </a>
+                <p style="font-size: 0.85rem; margin-top: 2rem; color: var(--text-muted);">We aim to respond to all
+                    technical queries within 24-48 business hours.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Smooth active navigation scroll spy targeting Logic
+        const sections = document.querySelectorAll("section");
+        const navLinks = document.querySelectorAll(".nav-link");
+
+        window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 120) {
+                    current = section.getAttribute("id");
+                }
+            });
+
+            navLinks.forEach((link) => {
+                link.classList.remove("active");
+                if (link.getAttribute("href").includes(current)) {
+                    link.classList.add("active");
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

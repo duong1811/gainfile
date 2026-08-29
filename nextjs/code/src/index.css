@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Default to dark Template properties for safety */
+  --aurora-1: #4f46e5;
+  --aurora-2: #7c3aed;
+  --aurora-3: #2563eb;
+  --aurora-4: #0891b2;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --bg-primary: #030712;
+  --dropdown-bg: rgba(3, 7, 18, 0.85);
+  --dropdown-border: rgba(255, 255, 255, 0.08);
+  --dropdown-hover: rgba(255, 255, 255, 0.08);
+  --dropdown-separator: rgba(255, 255, 255, 0.08);
+  --dropdown-footer-bg: rgba(0, 0, 0, 0.2);
+}
+
+body.light-theme {
+  --aurora-1: #6366f1; /* Indigo */
+  --aurora-2: #8b5cf6; /* Violet */
+  --aurora-3: #3b82f6; /* Blue */
+  --aurora-4: #06b6d4; /* Cyan */
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(0, 0, 0, 0.05);
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --bg-primary: #f8fafc;
+  --dropdown-bg: rgba(255, 255, 255, 0.85);
+  --dropdown-border: rgba(0, 0, 0, 0.08);
+  --dropdown-hover: rgba(99, 102, 241, 0.05);
+  --dropdown-separator: rgba(0, 0, 0, 0.06);
+  --dropdown-footer-bg: rgba(0, 0, 0, 0.03);
+}
+
+body.dark-theme {
+  --aurora-1: #4f46e5;
+  --aurora-2: #7c3aed;
+  --aurora-3: #2563eb;
+  --aurora-4: #0891b2;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.6);
+  --bg-primary: #030712;
+  --dropdown-bg: rgba(3, 7, 18, 0.85);
+  --dropdown-border: rgba(255, 255, 255, 0.08);
+  --dropdown-hover: rgba(255, 255, 255, 0.08);
+  --dropdown-separator: rgba(255, 255, 255, 0.08);
+  --dropdown-footer-bg: rgba(0, 0, 0, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.5);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.aurora-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 10% 10%, rgba(79, 70, 229, 0.15), transparent 40%),
+              radial-gradient(circle at 90% 10%, rgba(124, 58, 237, 0.15), transparent 40%),
+              radial-gradient(circle at 50% 90%, rgba(8, 145, 178, 0.15), transparent 40%),
+              radial-gradient(circle at 10% 90%, rgba(37, 99, 235, 0.15), transparent 40%);
+  filter: blur(80px);
+  animation: aurora-shift 20s infinite alternate ease-in-out;
+}
+
+body.light-theme .aurora-bg {
+  background: radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.4), transparent 40%),
+              radial-gradient(circle at 90% 10%, rgba(139, 92, 246, 0.4), transparent 40%),
+              radial-gradient(circle at 50% 90%, rgba(6, 182, 212, 0.4), transparent 40%),
+              radial-gradient(circle at 10% 90%, rgba(59, 130, 246, 0.4), transparent 40%);
+  filter: blur(100px);
+}
+
+@keyframes aurora-shift {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.1) translate(2%, 2%); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--text-primary) 0%, rgba(128,128,128, 0.7) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-active {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(124, 58, 237, 0.2) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.1);
+}
