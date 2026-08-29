@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { RiPlayCircleLine } from 'react-icons/ri';
 
 const secondaryLinks = [
   { href: '/about-us', label: 'About Us' },
@@ -20,7 +19,7 @@ const Bottombar = () => {
 
   return (
     <motion.footer
-      className="dashboard-bottombar glass-card z-[900] border-t border-[var(--glass-border)] bg-[var(--bg-primary)]/90 px-6 py-4 backdrop-blur-xl"
+      className="mt-auto border-t border-[var(--glass-border)] px-6 md:px-12 py-4"
       initial={{ y: 30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
