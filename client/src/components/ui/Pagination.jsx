@@ -8,7 +8,7 @@ const Pagination = ({ className, children }) => {
     <nav 
       role="navigation" 
       aria-label="pagination" 
-      className={cn("flex items-center gap-1 bg-black/40 p-1.5 rounded-2xl shadow-inner border border-white/5", className)}
+      className={cn("flex items-center gap-1 bg-[var(--glass-bg)] p-1.5 rounded-2xl shadow-inner border border-[var(--glass-border)]", className)}
     >
       {children}
     </nav>
@@ -43,7 +43,7 @@ const PaginationLink = ({
       "w-10 h-10 flex items-center justify-center rounded-xl text-sm font-bold transition-all relative z-10 outline-none focus-visible:ring-2 focus-visible:ring-[var(--aurora-1)]",
       isActive 
         ? "text-[var(--bg-primary)] shadow-lg" 
-        : "text-[var(--text-secondary)] hover:bg-[var(--glass-border)] hover:text-white disabled:opacity-30 disabled:cursor-not-allowed",
+        : "text-[var(--text-secondary)] hover:bg-[var(--glass-border)] hover:text-[var(--text-primary)] disabled:opacity-30 disabled:cursor-not-allowed",
       className
     )}
     {...props}

@@ -69,7 +69,7 @@ const FileManagerToolbar = ({
                                 key={size}
                                 type="button"
                                 onClick={() => onItemsPerPageChange(size)}
-                                className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-colors ${itemsPerPage === size ? 'bg-emerald-500 text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
+                                className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-colors hover:bg-emerald-500/70 hover:text-white ${itemsPerPage === size ? 'bg-emerald-500 text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
                             >
                                 {size}
                             </button>
@@ -116,36 +116,28 @@ const FileManagerToolbar = ({
             </div>
         </div>
 
-        {selectedCount > 0 && (
-            <div className="flex justify-between gap-4 border-t border-[var(--glass-border)]">
-                <div className="flex flex-wrap items-center gap-2 pt-4">
-                    <span className="text-sm font-bold text-[var(--aurora-1)]">{selectedCount} selected</span>
-                    <Button variant="outline" size="sm" className="gap-1.5 font-bold text-rose-400 hover:bg-rose-500 hover:text-white" onClick={onBulkDelete}>
-                        <RiDeleteBinLine size={16} /> Delete
-                    </Button>
-                    <Button variant="outline" size="sm" className="gap-1.5 font-bold" onClick={() => onBulkPublish(true)}>
-                        <RiGlobalLine size={16} /> Publish
-                    </Button>
-                    <Button variant="outline" size="sm" className="gap-1.5 font-bold" onClick={() => onBulkPublish(false)}>
-                        <RiEyeOffLine size={16} /> Unpublish
-                    </Button>
-                    <Button variant="outline" size="sm" className="gap-1.5 font-bold" onClick={() => onBulkSetAccess('premium')}>
-                        <RiVipCrownLine size={16} /> Premium Only
-                    </Button>
-                    <Button variant="outline" size="sm" className="gap-1.5 font-bold" onClick={() => onBulkSetAccess('free')}>
-                        <RiDownloadLine size={16} /> Free Download
-                    </Button>
-                    <Button variant="success" size="sm" className="gap-1.5 font-bold" onClick={onBulkGetLinks}>
-                        <RiLinkM size={16} /> Get Links
-                    </Button>
-                </div>
-                <div className="flex flex-wrap items-center gap-2">
-                    <Button variant="ghost" size="icon-sm" title="Clear selection" onClick={onClearSelection}>
-                        <RiCloseLine size={18} />
-                    </Button>
-                </div>
+        <div className="flex justify-between gap-4 border-t border-[var(--glass-border)]">
+            <div className="flex flex-wrap items-center gap-2 pt-4">
+                <Button disabled={selectedCount === 0} variant="danger" size="sm" className="gap-1.5 font-bold text-white" onClick={onBulkDelete}>
+                    <RiDeleteBinLine size={16} /> Delete
+                </Button>
+                <Button disabled={selectedCount === 0} variant="glass" size="sm" className="gap-1.5 font-bold" onClick={() => onBulkPublish(true)}>
+                    <RiGlobalLine size={16} /> Publish
+                </Button>
+                <Button disabled={selectedCount === 0} variant="glass" size="sm" className="gap-1.5 font-bold" onClick={() => onBulkPublish(false)}>
+                    <RiEyeOffLine size={16} /> Unpublish
+                </Button>
+                <Button disabled={selectedCount === 0} variant="glass" size="sm" className="gap-1.5 font-bold" onClick={() => onBulkSetAccess('premium')}>
+                    <RiVipCrownLine size={16} /> Premium Only
+                </Button>
+                <Button disabled={selectedCount === 0} variant="glass" size="sm" className="gap-1.5 font-bold" onClick={() => onBulkSetAccess('free')}>
+                    <RiDownloadLine size={16} /> Free Download
+                </Button>
+                <Button disabled={selectedCount === 0} variant="success" size="sm" className="gap-1.5 font-bold" onClick={onBulkGetLinks}>
+                    <RiLinkM size={16} /> Get Links
+                </Button>
             </div>
-        )}
+        </div>
     </div>
 );
 

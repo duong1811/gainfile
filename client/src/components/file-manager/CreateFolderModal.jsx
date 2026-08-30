@@ -18,7 +18,7 @@ const CreateFolderModal = ({ isOpen, onClose, value, onChange, onSubmit }) => (
         variant="aurora1"
       />
       <ModalFooter className="justify-end">
-        <Button type="button" variant="ghost" onClick={onClose}>Cancel</Button>
+        <Button type="button" variant="glass" onClick={onClose}>Cancel</Button>
         <Button type="submit" variant="primary" disabled={!value.trim()}>
           <RiFolderAddLine /> Create Folder
         </Button>

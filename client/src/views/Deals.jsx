@@ -179,7 +179,7 @@ const Deals = () => {
                       </div>
                       <div className="flex items-center justify-between gap-4">
                         <div>
-                          <p className="text-[10px] uppercase tracking-wider text-[var(--text-secondary)]">Bandwidth</p>
+                          <p className="text-[10px] uppercase font-bold text-[var(--text-primary)]">Bandwidth</p>
                           <p className={`font-mono text-lg font-black transition-colors ${isSelected ? 'text-emerald-300' : 'text-[var(--text-primary)]'}`}>
                             {option.bandwidth}
                           </p>

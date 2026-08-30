@@ -290,10 +290,10 @@ const FileManager = () => {
           <p className="text-[var(--text-secondary)] text-lg">Central storage for project documents and assets.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <Button variant="outline" size="lg" className="font-bold gap-2" onClick={() => setIsCreateOpen(true)}>
+          <Button variant="glass" size="lg" className="font-bold gap-2" onClick={() => setIsCreateOpen(true)}>
             <RiFolderAddLine size={20} /> New Folder
           </Button>
-          <Button variant="glass" size="lg" className="font-bold gap-2 text-amber-500 hover:text-white hover:bg-amber-500" onClick={() => router.push('/upload')}>
+          <Button variant="warning" size="lg" className="font-bold gap-2 hover:text-white hover:bg-amber-500" onClick={() => router.push('/upload')}>
             <RiAddFill size={20} /> Upload New
           </Button>
         </div>

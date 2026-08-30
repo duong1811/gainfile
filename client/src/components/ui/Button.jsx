@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { cn } from "../../lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none active:scale-95",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all duration-300 aria-disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:hover:translate-y-0 aria-disabled:hover:shadow-none active:scale-95 aria-disabled:active:scale-100",
   {
     variants: {
       variant: {
@@ -15,7 +15,7 @@ const buttonVariants = cva(
         success: "bg-emerald-500 text-white hover:bg-emerald-600 shadow-lg shadow-emerald-500/20",
         warning: "bg-amber-500 text-white hover:bg-amber-600 shadow-lg shadow-amber-500/20",
         glass: "glass-card border border-[var(--glass-border)] text-[var(--text-primary)] hover:bg-[var(--glass-border)]",
-        outline: "bg-black/20 border border-[var(--glass-border)] text-[var(--text-primary)] hover:bg-[var(--glass-border)]",
+        outline: "bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-primary)] shadow-sm hover:bg-[var(--glass-border)]",
         ghost: "hover:bg-[var(--glass-border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]",
         white: "bg-white text-zinc-900 shadow-md hover:bg-gray-100",
         dark: "bg-zinc-900 text-white shadow-md border border-zinc-700 hover:bg-black",
@@ -51,15 +51,25 @@ const buttonVariants = cva(
   }
 )
 
-const Button = React.forwardRef(({ className, variant, size, rounded, as: Component = "button", ...props }, ref) => {
+const Button = React.forwardRef(({ className, variant, size, rounded, as: Component = "button", disabled, onClick, ...props }, ref) => {
   const MotionComponent = React.useMemo(() => 
     typeof Component === 'string' ? (motion[Component] || motion.button) : motion(Component)
   , [Component]);
-  
+
+  const handleClick = (event) => {
+    if (disabled) {
+      event.preventDefault();
+      return;
+    }
+    onClick?.(event);
+  };
+
   return (
     <MotionComponent
       ref={ref}
-      whileTap={{ scale: 0.98 }}
+      aria-disabled={disabled || undefined}
+      whileTap={disabled ? undefined : { scale: 0.98 }}
+      onClick={handleClick}
       className={cn(buttonVariants({ variant, size, rounded }), className)}
       {...props}
     />
