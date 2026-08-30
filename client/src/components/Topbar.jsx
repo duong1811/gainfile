@@ -57,7 +57,7 @@ const Topbar = ({ isHorizontalMenu = false, children = null }) => {
 
   return (
     <motion.header
-      className="sticky top-0 z-[1000] glass-card relative mb-6 flex items-center gap-4 border-b border-[var(--glass-border)] px-4 py-4 md:px-12"
+      className="sticky top-0 z-[1000] glass-card mb-6 flex items-center gap-4 border-b border-[var(--glass-border)] px-4 py-4 md:px-20"
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
     >
@@ -80,16 +80,6 @@ const Topbar = ({ isHorizontalMenu = false, children = null }) => {
         >
           {isSidebarCollapsed ? (isRTL ? <RiMenuFoldLine size={24} /> : <RiMenuUnfoldLine size={24} />) : (isRTL ? <RiMenuUnfoldLine size={24} /> : <RiMenuFoldLine size={24} />)}
         </button>
-
-        <div className="hidden 2xl:flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--glass-border)] border border-[var(--glass-border)] w-[260px]">
-          <RiSearchLine className="text-[var(--text-secondary)]" />
-          <input
-            type="text"
-            placeholder={isHorizontalMenu ? 'Search videos, tickets, or files...' : 'Search modules, habits, or entries...'}
-            className="bg-transparent border-none outline-none text-sm text-[var(--text-primary)] w-full placeholder:text-[var(--text-secondary)]"
-            dir={isRTL ? 'rtl' : 'ltr'}
-          />
-        </div>
       </div>
 
       {children}

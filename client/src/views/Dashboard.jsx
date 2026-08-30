@@ -222,7 +222,7 @@ const Dashboard = () => {
   return (
     <div className="flex min-h-[calc(100vh-100px)] flex-col p-6 text-[var(--text-primary)] md:p-12">
       <motion.div
-        className="relative mb-6 overflow-hidden rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] px-4 py-3"
+        className="relative hidden mb-6 overflow-hidden rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] px-4 py-3"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.12, duration: 0.5 }}
@@ -248,12 +248,9 @@ const Dashboard = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-tight">
-            Dashboard <RiFireLine className="inline-block text-orange-500 animate-pulse pb-1" />
+          <h1 className="text-2xl md:text-3xl font-bold mb-2 tracking-tight">
+            Welcome back, Alexander! <RiFireLine className="inline-block text-orange-500 animate-pulse pb-1" />
           </h1>
-          <p className="text-[var(--text-secondary)] text-lg max-w-2xl font-medium">
-            Upload, manage, and share your files securely—all from one place.
-          </p>
         </div>
       </motion.div>
 
@@ -437,7 +434,7 @@ const Dashboard = () => {
 
 
       <motion.div
-        className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8"
+        className="hidden grid-cols-1 lg:grid-cols-3 gap-6 mb-8"
         variants={containerVariants}
         initial="hidden"
         animate="visible"

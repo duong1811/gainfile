@@ -1,6 +1,8 @@
 import React from 'react';
-import { RiArrowDownSLine, RiArrowUpSLine, RiExpandUpDownLine, RiFolder3Fill, RiMore2Fill } from 'react-icons/ri';
-import { Button } from '../ui/Button';
+import { RiArrowDownSLine, RiArrowUpSLine, RiExpandUpDownLine, RiFolder3Fill } from 'react-icons/ri';
+import { Badge } from '../ui/Badge';
+import { Checkbox } from '../ui/Checkbox';
+import FileItemActionsMenu from './FileItemActionsMenu';
 import FileTypeIcon from './FileTypeIcon';
 
 const SortableHeader = ({ label, field, sortBy, onToggleSort }) => {
@@ -20,15 +22,34 @@ const SortableHeader = ({ label, field, sortBy, onToggleSort }) => {
   );
 };
 
-const FileListView = ({ items, sortBy, onToggleSort, onOpenFolder }) => (
+const FileListView = ({
+  items,
+  sortBy,
+  onToggleSort,
+  onOpenFolder,
+  isSelected,
+  onToggleSelect,
+  allSelected,
+  onToggleSelectAll,
+  onMove,
+  onCopy,
+  onGetLink,
+  onDelete,
+  onTogglePublish,
+  onSetAccess,
+}) => (
   <div className="overflow-x-auto rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)]">
-    <table className="w-full min-w-[650px] text-left text-sm">
+    <table className="w-full min-w-[800px] text-left text-sm">
       <thead className="border-b border-[var(--glass-border)] text-xs uppercase tracking-wider text-[var(--text-secondary)]">
         <tr>
+          <th className="w-10 px-5 py-4">
+            <Checkbox checked={allSelected} onCheckedChange={onToggleSelectAll} />
+          </th>
           <th className="px-5 py-4"><SortableHeader label="Name" field="name" sortBy={sortBy} onToggleSort={onToggleSort} /></th>
           <th className="px-5 py-4">Type</th>
           <th className="px-5 py-4"><SortableHeader label="Size" field="size" sortBy={sortBy} onToggleSort={onToggleSort} /></th>
           <th className="px-5 py-4"><SortableHeader label="Modified" field="date" sortBy={sortBy} onToggleSort={onToggleSort} /></th>
+          <th className="px-5 py-4">Status</th>
           <th className="w-14 px-5 py-4" />
         </tr>
       </thead>
@@ -37,8 +58,11 @@ const FileListView = ({ items, sortBy, onToggleSort, onOpenFolder }) => (
           <tr
             key={`${item.kind}-${item.id}`}
             onClick={() => item.kind === 'folder' && onOpenFolder(item.id)}
-            className="group cursor-pointer border-b border-[var(--glass-border)] transition-colors last:border-0 hover:bg-[var(--glass-border)]/50"
+            className={`group cursor-pointer border-b border-[var(--glass-border)] transition-colors last:border-0 hover:bg-[var(--glass-border)]/50 ${isSelected(item) ? 'bg-[var(--aurora-1)]/5' : ''}`}
           >
+            <td className="px-5 py-4" onClick={(event) => event.stopPropagation()}>
+              <Checkbox checked={isSelected(item)} onCheckedChange={() => onToggleSelect(item)} />
+            </td>
             <td className="px-5 py-4">
               <div className="flex items-center gap-3">
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--bg-primary)]">
@@ -51,7 +75,27 @@ const FileListView = ({ items, sortBy, onToggleSort, onOpenFolder }) => (
             <td className="px-5 py-4 font-mono text-xs text-[var(--text-secondary)]">{item.size}</td>
             <td className="px-5 py-4 text-xs text-[var(--text-secondary)]">{item.updated}</td>
             <td className="px-5 py-4">
-              <Button variant="ghost" size="icon-xs" onClick={(event) => event.stopPropagation()}><RiMore2Fill /></Button>
+              {item.kind === 'file' && (
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <Badge variant="outline" color={item.published ? 'success' : 'neutral'} size="xs">
+                    {item.published ? 'Published' : 'Unpublished'}
+                  </Badge>
+                  <Badge variant="outline" color={item.access === 'premium' ? 'warning' : 'primary'} size="xs">
+                    {item.access === 'premium' ? 'Premium' : 'Free'}
+                  </Badge>
+                </div>
+              )}
+            </td>
+            <td className="px-5 py-4">
+              <FileItemActionsMenu
+                item={item}
+                onMove={onMove}
+                onCopy={onCopy}
+                onGetLink={onGetLink}
+                onDelete={onDelete}
+                onTogglePublish={onTogglePublish}
+                onSetAccess={onSetAccess}
+              />
             </td>
           </tr>
         ))}

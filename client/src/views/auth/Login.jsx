@@ -1,17 +1,13 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { RiGoogleFill, RiMicrosoftFill, RiMailLine, RiLockPasswordLine } from 'react-icons/ri';
 
-const Login = () => {
-  const router = useRouter();
+const GAINFILE_LOGIN_URL = 'https://app.gainfile.com/api/auth/login';
 
+const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
-    window.localStorage.setItem('gainfile-authenticated', 'true');
-    const returnTo = window.sessionStorage.getItem('gainfile-return-to') || '/dashboard';
-    window.sessionStorage.removeItem('gainfile-return-to');
-    router.push(returnTo);
+    window.location.href = GAINFILE_LOGIN_URL;
   };
 
   return (

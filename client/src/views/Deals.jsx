@@ -5,8 +5,7 @@ import { motion } from 'framer-motion';
 import {
   RiArrowRightLine,
   RiCheckLine,
-  RiCloseLine,
-  RiDiscountPercentLine,
+  RiGift2Fill,
   RiLock2Line,
   RiSparkling2Line,
   RiVipCrown2Line,
@@ -17,61 +16,43 @@ const planGroups = [
   { 
     duration: 30, 
     options: [
-      { tier: 'Pro', bandwidth: '1TB', storage: '1TB', originalPrice: 30, price: 20 },
-      { tier: 'Max', bandwidth: '2TB', storage: '1TB', originalPrice: 50, price: 35 },
+      { tier: 'Pro', bandwidth: '1TB', storage: '1TB', originalPrice: 20, price: 14 },
+      { tier: 'Max', bandwidth: '2TB', storage: '1TB', originalPrice: 30, price: 21 },
     ] 
   },
   { 
     duration: 90, 
     options: [
-      { tier: 'Pro', bandwidth: '3TB', storage: '3TB', originalPrice: 70, price: 50 },
-      { tier: 'Max', bandwidth: '6TB', storage: '3TB', originalPrice: 110, price: 80 },
+      { tier: 'Pro', bandwidth: '3TB', storage: '3TB', originalPrice: 50, price: 35 },
+      { tier: 'Max', bandwidth: '6TB', storage: '3TB', originalPrice: 80, price: 56 },
     ] 
   },
   { 
     duration: 180, 
     options: [
-      { tier: 'Pro', bandwidth: '6TB', storage: '6TB', originalPrice: 120, price: 90 },
-      { tier: 'Max', bandwidth: '10TB', storage: '6TB', originalPrice: 175, price: 130 },
+      { tier: 'Pro', bandwidth: '6TB', storage: '6TB', originalPrice: 90, price: 63 },
+      { tier: 'Max', bandwidth: '10TB', storage: '6TB', originalPrice: 130, price: 91 },
     ] 
   },
   { 
     duration: 365, 
     options: [
-      { tier: 'Pro', bandwidth: '12TB', storage: '12TB', originalPrice: 220, price: 160 },
-      { tier: 'Max', bandwidth: '30TB', storage: '12TB', originalPrice: 400, price: 300 },
+      { tier: 'Pro', bandwidth: '12TB', storage: '12TB', originalPrice: 160, price: 112 },
+      { tier: 'Max', bandwidth: '30TB', storage: '12TB', originalPrice: 400, price: 210 },
     ] 
   },
-];
-
-const freeBenefits = [
-  { text: '200GB storage', available: true },
-  { text: 'Limited download speed', available: true },
-  { text: 'Advertising included', available: false },
-  { text: 'Files deleted 30 days after last download', available: false },
 ];
 
 const premiumBenefits = [
   'Maximum download speed',
   'Secure downloads',
   'Simultaneous downloads',
-  'Unlimited file inactivity',
+  'Unlimited File Inactivity',
   'No advertising',
+  'No Waiting time',
   'Priority support',
+  'SAFE checkout',
 ];
-
-const Benefit = ({ children, available = true }) => {
-  const Icon = available ? RiCheckLine : RiCloseLine;
-  return (
-    <li className={`flex items-start gap-2.5 text-sm ${available ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'}`}>
-      {/* Icon checkmark xanh lá cây bên trong box */}
-      <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${available ? 'bg-emerald-500/15 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
-        <Icon size={14} />
-      </span>
-      <span className="leading-5">{children}</span>
-    </li>
-  );
-};
 
 const Deals = () => {
   const router = useRouter();
@@ -109,54 +90,31 @@ const Deals = () => {
         animate={{ y: 0, opacity: 1 }}
       >
         <div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-2 tracking-tight">
+          <h1 className="mb-2 text-4xl font-bold tracking-tight md:text-5xl">
             Premium <span className="text-gradient from-amber-400 to-orange-500">Plan</span>
           </h1>
           <p className="text-lg text-[var(--text-secondary)]">Select a plan that matches your storage and bandwidth needs.</p>
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 gap-6 pb-6 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 items-stretch">
-        {/* FREE PLAN CARD */}
-        <motion.section
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="glass-card flex min-w-0 flex-col rounded-[2rem] border border-[var(--glass-border)] bg-[var(--glass-bg)] p-5 xl:min-h-[590px]"
-        >
-          <div className="pb-5">
-            <p className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Current account</p>
-            <div className="mt-2 flex items-end justify-between">
-              <h2 className="text-2xl font-bold">Free</h2>
-              <p className="font-mono text-2xl font-black">$0</p>
-            </div>
-            <p className="mt-2 text-xs text-[var(--text-secondary)]">Basic access with limited resources</p>
-          </div>
+      {/* SHARED PREMIUM BENEFITS */}
+      <div className="mb-8 flex flex-col items-center gap-3 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] px-6 py-4 sm:flex-row sm:justify-center sm:gap-x-6">
+        <p className="text-xs font-bold uppercase tracking-widest text-emerald-400">Each premium plan includes</p>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-4 sm:gap-x-8 sm:gap-y-3">
+          {premiumBenefits.map((benefit) => (
+            <span key={benefit} className="flex items-center gap-1.5 text-[11px] font-medium leading-tight text-[var(--text-primary)] sm:text-sm">
+              <RiCheckLine className="shrink-0 text-emerald-400" size={14} /> {benefit}
+            </span>
+          ))}
+        </div>
+      </div>
 
-          <div className="rounded-2xl border border-[var(--glass-border)] bg-[var(--bg-primary)] p-4">
-            <p className="text-xs text-[var(--text-secondary)]">Storage</p>
-            <p className="mt-1 font-mono text-lg font-bold">200GB</p>
-          </div>
-
-          <div className="mt-6 flex-1">
-            <p className="mb-4 text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">Included benefits</p>
-            <ul className="space-y-3">
-              {freeBenefits.map((benefit) => (
-                <Benefit key={benefit.text} available={benefit.available}>{benefit.text}</Benefit>
-              ))}
-            </ul>
-          </div>
-
-          <div className="mt-6 rounded-2xl border border-[var(--glass-border)] px-4 py-3 text-center text-sm font-bold text-[var(--text-secondary)]">
-            Current plan
-          </div>
-        </motion.section>
-
+      <div className="grid grid-cols-1 gap-10 pb-6 sm:grid-cols-2 xl:grid-cols-4 items-stretch">
         {/* PREMIUM PLAN CARDS */}
         {planGroups.map((group, index) => {
           const selectedIndex = selectedOptions[group.duration];
           const selectedPlan = group.options[selectedIndex];
-          const isBestValue = group.duration === 365;
-          const savings = selectedPlan.originalPrice - selectedPlan.price;
+          const isBestValue = group.duration === 180;
 
           return (
             <motion.section
@@ -164,35 +122,31 @@ const Deals = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: (index + 1) * 0.08 }}
-              className={`glass-card relative flex min-w-0 flex-col overflow-hidden rounded-[2rem] border p-5 xl:min-h-[590px] transition-all duration-300 ${
+              className={`relative flex min-w-0 flex-col overflow-hidden rounded-xl border px-5 pb-5 xl:min-h-[440px] transition-all duration-300 ${
                 isBestValue 
-                  ? 'border-emerald-400/80 bg-gradient-to-b from-emerald-500/15 via-[var(--aurora-1)]/10 to-[var(--glass-bg)] shadow-2xl shadow-emerald-500/15 ring-1 ring-emerald-400/40 xl:-translate-y-3' 
+                  ? 'border-emerald-400/80  xl:-translate-y-3 bg-[var(--glass-bg)]' 
                   : 'border-[var(--glass-border)] bg-[var(--glass-bg)]'
               }`}
             >
-              {/* TOP ACCENT LINE */}
-              <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${isBestValue ? 'from-amber-400 via-emerald-400 to-teal-400' : 'from-emerald-400 to-teal-500'}`} />
-              
-              {/* SAVINGS BADGE */}
-              <div className={`absolute right-4 top-4 flex items-center gap-1.5 rounded-full border px-3 py-1.5 shadow-sm ${
-                isBestValue 
-                  ? 'border-amber-400/40 bg-amber-400/20 text-amber-300 shadow-amber-500/20' 
-                  : 'border-emerald-400/30 bg-emerald-500/10 text-emerald-400 shadow-emerald-500/10'
-              }`}>
-                {isBestValue ? <RiSparkling2Line size={14} className="text-amber-300 animate-pulse" /> : <RiDiscountPercentLine size={14} />}
-                <span className="text-[10px] font-black uppercase tracking-wider">{isBestValue ? `Best Value` : 'Save'}</span>
-                <span className="font-mono text-xs font-black text-white">${savings}</span>
+              {/* SPECIAL OFFER 30% OFF BADGE */}
+              <div className="absolute right-0 z-10 flex items-center gap-1.5 rounded-bl-xl bg-emerald-500 px-3 py-1.5 text-white">
+                <RiGift2Fill size={14} />
+                <span className="text-[10px] font-black tracking-wider">Special Offer 30%</span>
               </div>
 
+              {/* BEST VALUE BADGE */}
+              {isBestValue && (
+                <div className="absolute left-0 flex items-center gap-1.5 rounded-br-xl bg-amber-500 px-3 py-1 text-white shadow-sm shadow-amber-500/20">
+                  <RiSparkling2Line size={13} className="animate-pulse text-white" />
+                  <span className="text-[10px] font-black tracking-wider">Best Value</span>
+                </div>
+              )}
+
               {/* CARD HEADER */}
-              <div className="pb-5">
-                {/* Crown Icon + Text Xanh Lá */}
-                <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-emerald-400">
-                  <RiVipCrown2Line /> Premium
-                </p>
+              <div className="py-5 mt-5 flex justify-between">
                 <h2 className="mt-1 text-2xl font-bold">{group.duration} days</h2>
                 
-                {/* DYNAMIC PRICE - Giá Xanh Lá */}
+                {/* DYNAMIC PRICE */}
                 <motion.div key={selectedPlan.price} initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="mt-2 flex items-baseline gap-2">
                   <span className="font-mono text-xs font-semibold text-[var(--text-secondary)] line-through decoration-rose-400/80">
                     ${selectedPlan.originalPrice.toFixed(2)}
@@ -203,8 +157,8 @@ const Deals = () => {
                 </motion.div>
               </div>
 
-              {/* OPTIONS SELECTOR - XANH LÁ CÂY TRONG BOX */}
-              <div className="flex flex-col gap-2.5">
+              {/* OPTIONS SELECTOR */}
+              <div className="flex flex-1 flex-col justify-center gap-2.5">
                 {group.options.map((option, optionIndex) => {
                   const isSelected = selectedIndex === optionIndex;
                   return (
@@ -212,24 +166,29 @@ const Deals = () => {
                       key={option.tier}
                       type="button"
                       onClick={() => setSelectedOptions((current) => ({ ...current, [group.duration]: optionIndex }))}
-                      className={`group w-full rounded-2xl border p-3 text-left transition-all duration-200 ${
+                      className={`group w-full rounded-2xl border bg-[var(--bg-primary)] p-4 text-left transition-all duration-200 ${
                         isSelected 
-                          ? 'border-emerald-500/80 bg-emerald-500/15 shadow-md shadow-emerald-500/10 ring-1 ring-emerald-500/40' 
-                          : 'border-[var(--glass-border)] bg-[var(--bg-primary)] hover:border-emerald-500/40 opacity-70 hover:opacity-100'
+                          ? 'border-emerald-400 ring-emerald-400 shadow-md shadow-emerald-500/10 opacity-100' 
+                          : 'border-[var(--glass-border)] opacity-60 hover:opacity-100 hover:border-emerald-500/40'
                       }`}
                     >
-                      <div className="mb-1.5 flex items-center justify-between">
-                        <span className={`text-sm font-bold ${isSelected ? 'text-emerald-400' : ''}`}>{option.tier}</span>
-                        <RiArrowRightLine className={`transition-transform duration-200 ${isSelected ? 'text-emerald-400 translate-x-1' : 'text-[var(--text-secondary)] group-hover:translate-x-1'}`} />
+                      <div className="mb-2 flex items-center justify-center">
+                        <span className={`text-sm font-bold transition-colors ${isSelected ? 'text-emerald-400' : 'text-[var(--text-primary)]'}`}>
+                          {option.tier}
+                        </span>
                       </div>
                       <div className="flex items-center justify-between gap-4">
                         <div>
                           <p className="text-[10px] uppercase tracking-wider text-[var(--text-secondary)]">Bandwidth</p>
-                          <p className="font-mono text-xs font-bold">{option.bandwidth}</p>
+                          <p className={`font-mono text-lg font-black transition-colors ${isSelected ? 'text-emerald-300' : 'text-[var(--text-primary)]'}`}>
+                            {option.bandwidth}
+                          </p>
                         </div>
                         <div className="text-right">
                           <p className="text-[10px] uppercase tracking-wider text-[var(--text-secondary)]">Storage</p>
-                          <p className="font-mono text-xs font-bold">{option.storage}</p>
+                          <p className={`font-mono text-lg font-black transition-colors ${isSelected ? 'text-emerald-300' : 'text-[var(--text-primary)]'}`}>
+                            {option.storage}
+                          </p>
                         </div>
                       </div>
                     </button>
@@ -237,21 +196,14 @@ const Deals = () => {
                 })}
               </div>
 
-              {/* BENEFITS LIST */}
-              <div className="flex-1 py-5">
-                <ul className="space-y-2.5">
-                  {premiumBenefits.map((benefit) => <Benefit key={benefit}>{benefit}</Benefit>)}
-                </ul>
-              </div>
-
               {/* ACTION BUTTON */}
               <button
                 type="button"
                 onClick={() => handleBuy(group.duration, selectedPlan)}
-                className={`group mt-auto flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:brightness-110 active:scale-[0.98] ${
+                className={`group mt-6 flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:brightness-110 active:scale-[0.98] ${
                   isBestValue
-                    ? 'bg-gradient-to-r from-emerald-500 via-[var(--aurora-1)] to-[var(--aurora-2)] shadow-lg shadow-emerald-500/25'
-                    : 'bg-gradient-to-r from-[var(--aurora-1)] to-[var(--aurora-2)] shadow-md shadow-[var(--aurora-1)]/20'
+                    ? 'bg-gradient-to-r from-emerald-500 via-[var(--aurora-1)] to-[var(--aurora-2)]'
+                    : 'bg-gradient-to-r from-[var(--aurora-1)] to-[var(--aurora-2)]'
                 }`}
               >
                 <span>Buy {selectedPlan.tier} (${selectedPlan.price.toFixed(2)})</span>

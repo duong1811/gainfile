@@ -23,9 +23,3 @@
     padding-inline-start: 80px;
   }
 }
-
-@media (max-width: 768px) {
-  .main-content {
-    padding-top: 5rem;
-  }
-}
