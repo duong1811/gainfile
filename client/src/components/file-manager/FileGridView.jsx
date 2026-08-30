@@ -12,7 +12,8 @@ const FileGridView = ({ items, onOpenFolder, isSelected, onToggleSelect, onMove,
       <Card
         key={`${item.kind}-${item.id}`}
         variant="interactive"
-        transition={{ delay: index * 0.04 }}
+        overflow="visible"
+        transition={{ delay: index * 0.01 }}
         className={`group relative cursor-pointer ${isSelected(item) ? 'ring-2 ring-[var(--aurora-1)]' : ''}`}
         onClick={() => item.kind === 'folder' && onOpenFolder(item.id)}
       >

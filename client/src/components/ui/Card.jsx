@@ -4,7 +4,7 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
 const cardVariants = cva(
-  "glass-card rounded-[2rem] border transition-all duration-300 relative",
+  "glass-card rounded-[1rem] border transition-all duration-300 relative",
   {
     variants: {
       variant: {

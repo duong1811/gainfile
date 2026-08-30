@@ -44,7 +44,7 @@ const FileManagerToolbar = ({
 }) => (
     <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] p-4">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-2 text-sm">
+            <nav aria-label="Breadcrumb" className="flex min-w-0 items-center gap-2 text-md">
                 <button
                     type="button"
                     onClick={onGoToRoot}
@@ -118,6 +118,12 @@ const FileManagerToolbar = ({
 
         <div className="flex justify-between gap-4 border-t border-[var(--glass-border)]">
             <div className="flex flex-wrap items-center gap-2 pt-4">
+                {selectedCount > 0 && (
+                    <span className="flex items-center gap-2 rounded-xl bg-[var(--aurora-1)]/10 px-3 py-1.5 text-xs font-bold text-[var(--aurora-1)]">
+                        <RiCloseLine className="cursor-pointer" onClick={onClearSelection} />
+                        {selectedCount} selected
+                    </span>
+                )}
                 <Button disabled={selectedCount === 0} variant="danger" size="sm" className="gap-1.5 font-bold text-white" onClick={onBulkDelete}>
                     <RiDeleteBinLine size={16} /> Delete
                 </Button>

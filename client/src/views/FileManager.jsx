@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { RiAddFill, RiFolder3Fill, RiFolderAddLine, RiSearchLine } from 'react-icons/ri';
 import { Button } from '../components/ui/Button';
+import { ConfirmDialog } from '../components/ui/ConfirmDialog';
 import {
   Pagination,
   PaginationContent,
@@ -47,6 +48,7 @@ const FileManager = () => {
   const [publicOnly, setPublicOnly] = useState(false);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
   const [bulkMoveDestination, setBulkMoveDestination] = useState('');
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const forceRefresh = () => setRefreshTick((tick) => tick + 1);
 
@@ -183,6 +185,19 @@ const FileManager = () => {
     forceRefresh();
   };
 
+  const requestDeleteItem = (item) => setDeleteTarget({ type: 'item', item });
+  const requestBulkDelete = () => setDeleteTarget({ type: 'bulk', count: selectedItems.length });
+  const closeDeleteDialog = () => setDeleteTarget(null);
+
+  const confirmDelete = () => {
+    if (!deleteTarget) return;
+    if (deleteTarget.type === 'bulk') {
+      handleBulkDelete();
+    } else {
+      deleteItem(deleteTarget.item);
+    }
+  };
+
   const copyLink = (item) => {
     const link = `https://gainfile.com/s/${item.kind}-${item.id}`;
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
@@ -269,7 +284,7 @@ const FileManager = () => {
     onMove: openMoveModal,
     onCopy: openCopyModal,
     onGetLink: copyLink,
-    onDelete: deleteItem,
+    onDelete: requestDeleteItem,
     onTogglePublish: togglePublish,
     onSetAccess: setFileAccess,
     isSelected,
@@ -322,7 +337,7 @@ const FileManager = () => {
         bulkMoveDestination={bulkMoveDestination}
         onBulkMoveDestinationChange={setBulkMoveDestination}
         onBulkMove={handleBulkMove}
-        onBulkDelete={handleBulkDelete}
+        onBulkDelete={requestBulkDelete}
         onBulkPublish={handleBulkPublish}
         onBulkSetAccess={handleBulkSetAccess}
         onBulkGetLinks={handleBulkGetLinks}
@@ -401,6 +416,19 @@ const FileManager = () => {
         folders={folders}
         onSelectDestination={handleSelectDestination}
         onClose={() => setMoveCopyTarget(null)}
+      />
+
+      <ConfirmDialog
+        isOpen={!!deleteTarget}
+        onClose={closeDeleteDialog}
+        onConfirm={confirmDelete}
+        title={deleteTarget?.type === 'bulk' ? `Delete ${deleteTarget.count} item(s)?` : `Delete "${deleteTarget?.item?.name}"?`}
+        description={
+          deleteTarget?.type === 'bulk'
+            ? `This will permanently delete ${deleteTarget.count} selected item(s). This action cannot be undone.`
+            : `This will permanently delete this ${deleteTarget?.item?.kind}. This action cannot be undone.`
+        }
+        confirmLabel="Delete"
       />
     </div>
   );
