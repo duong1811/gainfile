@@ -19,7 +19,7 @@ const Bottombar = () => {
 
   return (
     <motion.footer
-      className="mt-auto border-t border-[var(--glass-border)] px-6 md:px-12 py-4"
+      className="relative shrink-0 border-t border-[var(--glass-border)] bg-[var(--bg-primary)]/70 px-6 py-4 backdrop-blur-xl md:px-12"
       initial={{ y: 30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}

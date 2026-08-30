@@ -39,13 +39,8 @@ const Register = () => {
           </div>
 
           <div className="relative">
-            <RiBuilding4Line className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
-            <input type="text" placeholder="Company / Tenant Name" className="w-full bg-[var(--glass-border)] border border-[var(--glass-border)] rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-[var(--aurora-1)] text-[var(--text-primary)]" />
-          </div>
-
-          <div className="relative">
             <RiMailLine className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
-            <input type="email" placeholder="Work Email" className="w-full bg-[var(--glass-border)] border border-[var(--glass-border)] rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-[var(--aurora-1)] text-[var(--text-primary)]" />
+            <input type="email" placeholder="Email" className="w-full bg-[var(--glass-border)] border border-[var(--glass-border)] rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-[var(--aurora-1)] text-[var(--text-primary)]" />
           </div>
 
           <div className="relative">

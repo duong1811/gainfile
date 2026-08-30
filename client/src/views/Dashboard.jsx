@@ -220,7 +220,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="p-6 md:p-12 min-h-[calc(100vh-100px)] text-[var(--text-primary)]">
+    <div className="flex min-h-[calc(100vh-100px)] flex-col p-6 text-[var(--text-primary)] md:p-12">
       <motion.div
         className="relative mb-6 overflow-hidden rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] px-4 py-3"
         initial={{ opacity: 0, y: 12 }}
@@ -242,7 +242,7 @@ const Dashboard = () => {
         </div>
       </motion.div>
       <motion.div
-        className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4"
+        className="order-first mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -252,13 +252,8 @@ const Dashboard = () => {
             Dashboard <RiFireLine className="inline-block text-orange-500 animate-pulse pb-1" />
           </h1>
           <p className="text-[var(--text-secondary)] text-lg max-w-2xl font-medium">
-            Your systems are performing at peak efficiency. Here is your operational intelligence for today.
+            Upload, manage, and share your files securely—all from one place.
           </p>
-        </div>
-        <div className="flex gap-2">
-          <Button variant="primary" className="px-5 font-bold flex items-center gap-2 hover:scale-105">
-            <RiDownloadCloud2Line /> Download CSV
-          </Button>
         </div>
       </motion.div>
 
@@ -351,7 +346,7 @@ const Dashboard = () => {
 
       {/* My Account */}
       <motion.section
-        className="mb-8"
+        className="order-last mb-8 mt-2"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
@@ -440,26 +435,6 @@ const Dashboard = () => {
         </Tabs>
       </motion.section>
 
-      {/* Stats Row */}
-      <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <motion.div variants={itemVariants}>
-          <StatCard title="Total Revenue" value="$64,320" change="+14.5%" changeType="increase" icon={RiWalletLine} variant="aurora" />
-        </motion.div>
-        <motion.div variants={itemVariants}>
-          <StatCard title="Active Tenants" value="1,245" change="+34" changeType="increase" icon={RiCheckboxCircleLine} variant="emerald" />
-        </motion.div>
-        <motion.div variants={itemVariants}>
-          <StatCard title="MRR Churn" value="1.2%" change="-0.4%" changeType="decrease" icon={RiStarLine} variant="rose" />
-        </motion.div>
-        <motion.div variants={itemVariants}>
-          <StatCard title="Avg Check Size" value="$48.50" change="Stable" changeType="neutral" icon={RiExchangeDollarLine} variant="blue" />
-        </motion.div>
-      </motion.div>
 
       <motion.div
         className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8"
@@ -503,41 +478,7 @@ const Dashboard = () => {
           </Card>
         </motion.div>
       </motion.div>
-
-      <motion.div
-        className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {/* Task List */}
-        <Card className="flex flex-col">
-          <CardHeader className="flex-row justify-between items-center mb-6 space-y-0">
-            <CardTitle className="text-lg">Priority Tasks</CardTitle>
-            <Button variant="ghost" size="sm" className="text-[var(--aurora-1)] font-bold hover:underline px-0">View All</Button>
-          </CardHeader>
-          <CardContent className="flex-1 overflow-y-auto space-y-4 pr-2">
-            {tasksData.map((task, i) => (
-              <div key={i} className="flex gap-4 items-start p-3 rounded-xl hover:bg-[var(--glass-border)] transition-colors border border-transparent hover:border-[var(--glass-border)]">
-                <div className={`mt-1 flex-shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center
-                       ${task.status === 'Completed' ? 'bg-emerald-500/20 border-emerald-500 text-emerald-500' : 'border-[var(--glass-border)]'}`}>
-                  {task.status === 'Completed' && <RiCheckDoubleLine size={12} />}
-                </div>
-                <div>
-                  <p className={`font-bold text-sm ${task.status === 'Completed' ? 'line-through text-[var(--text-secondary)]' : 'text-[var(--text-primary)]'}`}>{task.title}</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className={`text-[10px] px-2 py-0.5 rounded-md font-bold uppercase tracking-wider
-                             ${task.priority === 'High' ? 'bg-rose-500/10 text-rose-500' : task.priority === 'Medium' ? 'bg-amber-500/10 text-amber-500' : 'bg-[var(--glass-border)] text-[var(--text-secondary)]'}`}>
-                      {task.priority}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-
-      </motion.div>
+     
     </div>
   );
 };

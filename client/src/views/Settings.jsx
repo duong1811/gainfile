@@ -33,10 +33,10 @@ const Settings = () => {
         transition={{ duration: 0.8 }}
       >
         <div>
-          <div className="flex items-center gap-2 mb-4">
+          {/* <div className="flex items-center gap-2 mb-4">
             <RiSettings4Line className="text-[var(--text-secondary)]" />
             <span className="text-[var(--text-secondary)] text-[10px] font-bold uppercase tracking-widest text-[var(--aurora-1)]">Configuration</span>
-          </div>
+          </div> */}
           <h1 className="text-4xl md:text-6xl font-bold mb-2 tracking-tight">
             System <span className="text-gradient from-gray-500 to-gray-300">Settings</span>
           </h1>

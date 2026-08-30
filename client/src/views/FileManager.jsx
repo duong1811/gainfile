@@ -1,31 +1,91 @@
-import React from 'react';
+import React, { useMemo, useState, useSyncExternalStore } from 'react';
 import { motion } from 'framer-motion';
-import { RiFolder3Fill, RiFilePdfLine, RiFileImageLine, RiFileZipLine, RiAddFill, RiMore2Fill } from 'react-icons/ri';
+import { useRouter } from 'next/navigation';
+import { RiAddFill, RiFolder3Fill, RiFolderAddLine } from 'react-icons/ri';
 import { Button } from '../components/ui/Button';
-import { Card } from '../components/ui/Card';
+import CreateFolderModal from '../components/file-manager/CreateFolderModal';
+import FileGridView from '../components/file-manager/FileGridView';
+import FileListView from '../components/file-manager/FileListView';
+import FileManagerToolbar from '../components/file-manager/FileManagerToolbar';
+import QuickFoldersSection from '../components/file-manager/QuickFoldersSection';
+import {
+  MAX_RECENT_FOLDERS,
+  RECENT_FOLDERS_EVENT,
+  RECENT_FOLDERS_KEY,
+  filesByLocation,
+  getRecentFoldersSnapshot,
+  getServerRecentFoldersSnapshot,
+  initialFolders,
+  subscribeToRecentFolders,
+} from '../components/file-manager/fileManagerData';
 
 const FileManager = () => {
-  const folders = [
-    { id: 1, name: 'Project Assets', files: '24 items', size: '1.2 GB' },
-    { id: 2, name: 'Brand Guidelines', files: '8 items', size: '450 MB' },
-    { id: 3, name: 'Invoices 2026', files: '45 items', size: '12 MB' },
-    { id: 4, name: 'Design Drafts', files: '12 items', size: '2.4 GB' },
-  ];
+  const router = useRouter();
+  const [folders, setFolders] = useState(initialFolders);
+  const [currentFolder, setCurrentFolder] = useState(null);
+  const [view, setView] = useState('grid');
+  const [sortBy, setSortBy] = useState('name-asc');
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [newFolderName, setNewFolderName] = useState('');
 
-  const recentFiles = [
-    { id: 1, name: 'Quarterly_Report_Q1.pdf', type: 'pdf', size: '2.4 MB', date: 'Today, 10:45 AM' },
-    { id: 2, name: 'Hero_Image_V4.png', type: 'image', size: '4.1 MB', date: 'Yesterday, 03:20 PM' },
-    { id: 3, name: 'Src_Backup.zip', type: 'zip', size: '145 MB', date: 'Mar 24, 09:12 AM' },
-    { id: 4, name: 'Contract_Signed.pdf', type: 'pdf', size: '1.8 MB', date: 'Mar 22, 11:30 AM' },
-  ];
+  const recentFoldersRaw = useSyncExternalStore(subscribeToRecentFolders, getRecentFoldersSnapshot, getServerRecentFoldersSnapshot);
+  const recentFolderIds = useMemo(() => JSON.parse(recentFoldersRaw), [recentFoldersRaw]);
 
-  const getFileIcon = (type) => {
-    switch(type) {
-      case 'pdf': return <RiFilePdfLine className="text-rose-500" size={24} />;
-      case 'image': return <RiFileImageLine className="text-emerald-500" size={24} />;
-      case 'zip': return <RiFileZipLine className="text-amber-500" size={24} />;
-      default: return <RiFolder3Fill className="text-blue-500" size={24} />;
-    }
+  const currentFolderData = folders.find((folder) => folder.id === currentFolder);
+  const quickFolders = recentFolderIds
+    .map((id) => folders.find((folder) => folder.id === id))
+    .filter(Boolean);
+
+  const items = useMemo(() => {
+    const visibleFolders = currentFolder ? [] : folders;
+    const visibleFiles = filesByLocation[currentFolder || 'root'] || [];
+    const combined = [
+      ...visibleFolders.map((folder) => ({ ...folder, kind: 'folder', size: `${filesByLocation[folder.id]?.length || 0} files`, bytes: 0, timestamp: 0 })),
+      ...visibleFiles.map((file) => ({ ...file, kind: 'file' })),
+    ];
+
+    return combined.sort((a, b) => {
+      if (a.kind !== b.kind) return a.kind === 'folder' ? -1 : 1;
+      const direction = sortBy.endsWith('desc') ? -1 : 1;
+      if (sortBy.startsWith('size')) return (a.bytes - b.bytes) * direction;
+      if (sortBy.startsWith('date')) return (a.timestamp - b.timestamp) * direction;
+      return a.name.localeCompare(b.name) * direction;
+    });
+  }, [currentFolder, folders, sortBy]);
+
+  const openFolder = (folderId) => {
+    setCurrentFolder(folderId);
+    const current = JSON.parse(window.localStorage.getItem(RECENT_FOLDERS_KEY) || '[]');
+    const next = [folderId, ...current.filter((id) => id !== folderId)].slice(0, MAX_RECENT_FOLDERS);
+    window.localStorage.setItem(RECENT_FOLDERS_KEY, JSON.stringify(next));
+    window.dispatchEvent(new Event(RECENT_FOLDERS_EVENT));
+  };
+
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+    setView('list');
+  };
+
+  const toggleSort = (field) => {
+    setSortBy((current) => {
+      const [currentField, currentDirection] = current.split('-');
+      if (currentField === field) {
+        return `${field}-${currentDirection === 'asc' ? 'desc' : 'asc'}`;
+      }
+      return `${field}-asc`;
+    });
+  };
+
+  const createFolder = (event) => {
+    event.preventDefault();
+    const trimmedName = newFolderName.trim();
+    if (!trimmedName) return;
+
+    const id = `${trimmedName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Date.now()}`;
+    setFolders((current) => [{ id, name: trimmedName, updated: 'Just now' }, ...current]);
+    filesByLocation[id] = [];
+    setNewFolderName('');
+    setIsCreateOpen(false);
   };
 
   return (
@@ -41,57 +101,56 @@ const FileManager = () => {
           </h1>
           <p className="text-[var(--text-secondary)] text-lg">Central storage for project documents and assets.</p>
         </div>
-        <Button variant="glass" size="lg" className="font-bold gap-2 text-amber-500 hover:text-white hover:bg-amber-500">
-          <RiAddFill size={20} /> Upload New
-        </Button>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button variant="outline" size="lg" className="font-bold gap-2" onClick={() => setIsCreateOpen(true)}>
+            <RiFolderAddLine size={20} /> New Folder
+          </Button>
+          <Button variant="glass" size="lg" className="font-bold gap-2 text-amber-500 hover:text-white hover:bg-amber-500" onClick={() => router.push('/upload')}>
+            <RiAddFill size={20} /> Upload New
+          </Button>
+        </div>
       </motion.div>
 
-      <h3 className="text-xl font-bold mb-6 flex items-center gap-2">Quick Folders</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        {folders.map((folder, idx) => (
-          <Card
-            key={folder.id}
-            variant="interactive"
-            transition={{ delay: idx * 0.05 }}
-            className="group cursor-pointer"
-          >
-            <div className="flex justify-between items-start mb-4">
-              <RiFolder3Fill size={40} className="text-amber-500 group-hover:scale-110 transition-transform" />
-              <Button variant="ghost" size="icon-xs"><RiMore2Fill size={20} /></Button>
-            </div>
-            <h4 className="font-bold text-lg mb-1 truncate">{folder.name}</h4>
-            <div className="flex items-center justify-between text-xs text-[var(--text-secondary)] font-medium">
-              <span>{folder.files}</span>
-              <span>{folder.size}</span>
-            </div>
-          </Card>
-        ))}
+      {!currentFolder && (
+        <QuickFoldersSection quickFolders={quickFolders} filesByLocation={filesByLocation} onOpenFolder={openFolder} />
+      )}
+
+      <FileManagerToolbar
+        currentFolder={currentFolder}
+        currentFolderData={currentFolderData}
+        onGoToRoot={() => setCurrentFolder(null)}
+        sortBy={sortBy}
+        onSortChange={handleSortChange}
+        view={view}
+        onViewChange={setView}
+      />
+
+      <div className="mb-5 flex items-center justify-between">
+        <h3 className="text-xl font-bold">{currentFolderData ? currentFolderData.name : 'Root'}</h3>
+        <span className="text-xs font-semibold text-[var(--text-secondary)]">{items.length} items</span>
       </div>
 
-      <h3 className="text-xl font-bold mb-6 flex items-center gap-2">Recent Files</h3>
-      <div className="flex flex-col gap-4">
-        {recentFiles.map((file, idx) => (
-          <Card
-            key={file.id}
-            padding="sm"
-            transition={{ delay: 0.2 + (idx * 0.05) }}
-            className="hover:bg-[var(--glass-border)]/50 transition-colors flex items-center justify-between gap-4 cursor-pointer"
-          >
-            <div className="flex items-center gap-4 flex-1 min-w-0">
-              <div className="w-12 h-12 rounded-xl bg-[var(--bg-primary)] flex items-center justify-center flex-shrink-0 shadow-sm border border-[var(--glass-border)]">
-                {getFileIcon(file.type)}
-              </div>
-              <div className="min-w-0">
-                <h4 className="font-bold text-sm truncate">{file.name}</h4>
-                <p className="text-[10px] uppercase tracking-wider text-[var(--text-secondary)] font-bold mt-1">{file.date}</p>
-              </div>
-            </div>
-            <span className="text-xs font-mono font-bold text-[var(--text-secondary)] hidden md:block">
-              {file.size}
-            </span>
-          </Card>
-        ))}
-      </div>
+      {view === 'grid' ? (
+        <FileGridView items={items} onOpenFolder={openFolder} />
+      ) : (
+        <FileListView items={items} sortBy={sortBy} onToggleSort={toggleSort} onOpenFolder={openFolder} />
+      )}
+
+      {items.length === 0 && (
+        <div className="rounded-3xl border border-dashed border-[var(--glass-border)] p-14 text-center">
+          <RiFolder3Fill className="mx-auto text-5xl text-[var(--text-secondary)]" />
+          <h3 className="mt-4 text-lg font-bold">This folder is empty</h3>
+          <p className="mt-2 text-sm text-[var(--text-secondary)]">Upload files to start filling this folder.</p>
+        </div>
+      )}
+
+      <CreateFolderModal
+        isOpen={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
+        value={newFolderName}
+        onChange={(event) => setNewFolderName(event.target.value)}
+        onSubmit={createFolder}
+      />
     </div>
   );
 };
