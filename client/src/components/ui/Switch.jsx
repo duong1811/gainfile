@@ -13,15 +13,15 @@ export const Switch = ({ checked, onChange, variant = "default", className }) =>
   return (
     <div 
       className={cn(
-        "w-14 h-8 rounded-full cursor-pointer flex items-center px-1 transition-colors duration-300",
+        "w-12 h-6 rounded-full cursor-pointer flex items-center px-1 transition-colors duration-300",
         bgColors[variant],
         className
       )} 
       onClick={() => onChange(!checked)}
     >
       <motion.div 
-        className="w-6 h-6 rounded-full bg-white shadow-sm" 
-        animate={{ x: checked ? 24 : 0 }}
+        className="w-5 h-5 rounded-full bg-white shadow-sm" 
+        animate={{ x: checked ? 20 : 0 }}
         transition={{ type: "spring", stiffness: 500, damping: 30 }}
       />
     </div>

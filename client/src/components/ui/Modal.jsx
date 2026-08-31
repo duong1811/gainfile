@@ -65,7 +65,7 @@ export const Modal = ({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-6">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -88,7 +88,7 @@ export const Modal = ({
 
             {/* Header */}
             {(title || showClose) && (
-              <div className="flex items-center justify-between p-6 md:p-8 pb-0">
+              <div className="flex items-center justify-between p-4">
                 {title && (
                   <h3 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight">
                     {title}
@@ -106,7 +106,7 @@ export const Modal = ({
             )}
 
             {/* Content */}
-            <div className="p-6 md:p-8">
+            <div className="p-4">
               {children}
             </div>
           </motion.div>

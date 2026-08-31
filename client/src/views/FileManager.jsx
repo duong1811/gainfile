@@ -20,6 +20,7 @@ import FileManagerToolbar from '../components/file-manager/FileManagerToolbar';
 import FileSearchBar from '../components/file-manager/FileSearchBar';
 import MoveCopyModal from '../components/file-manager/MoveCopyModal';
 import QuickFoldersSection from '../components/file-manager/QuickFoldersSection';
+import ShareLinkModal from '../components/file-manager/ShareLinkModal';
 import {
   MAX_RECENT_FOLDERS,
   RECENT_FOLDERS_EVENT,
@@ -46,9 +47,11 @@ const FileManager = () => {
   const [refreshTick, setRefreshTick] = useState(0);
   const [moveCopyTarget, setMoveCopyTarget] = useState(null);
   const [publicOnly, setPublicOnly] = useState(false);
+  const [premiumOnly, setPremiumOnly] = useState(false);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
   const [bulkMoveDestination, setBulkMoveDestination] = useState('');
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [shareTarget, setShareTarget] = useState(null);
 
   const forceRefresh = () => setRefreshTick((tick) => tick + 1);
 
@@ -84,8 +87,9 @@ const FileManager = () => {
     const query = searchTerm.trim().toLowerCase();
     return allItems
       .filter((item) => !query || item.name.toLowerCase().includes(query))
-      .filter((item) => !publicOnly || item.kind === 'folder' || item.published);
-  }, [allItems, searchTerm, publicOnly]);
+      .filter((item) => !publicOnly || item.kind === 'folder' || item.published)
+      .filter((item) => !premiumOnly || item.kind === 'folder' || item.access === 'premium');
+  }, [allItems, searchTerm, publicOnly, premiumOnly]);
 
   const totalPages = Math.max(1, Math.ceil(filteredItems.length / itemsPerPage));
   const safePage = Math.min(page, totalPages);
@@ -198,13 +202,6 @@ const FileManager = () => {
     }
   };
 
-  const copyLink = (item) => {
-    const link = `https://gainfile.com/s/${item.kind}-${item.id}`;
-    if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(link).catch(() => {});
-    }
-  };
-
   const togglePublish = (item) => {
     const locationKey = currentFolder || 'root';
     filesByLocation[locationKey] = (filesByLocation[locationKey] || []).map((file) =>
@@ -283,7 +280,7 @@ const FileManager = () => {
   const itemActionHandlers = {
     onMove: openMoveModal,
     onCopy: openCopyModal,
-    onGetLink: copyLink,
+    onGetLink: setShareTarget,
     onDelete: requestDeleteItem,
     onTogglePublish: togglePublish,
     onSetAccess: setFileAccess,
@@ -305,7 +302,7 @@ const FileManager = () => {
           <p className="text-[var(--text-secondary)] text-lg">Central storage for project documents and assets.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <Button variant="glass" size="lg" className="font-bold gap-2" onClick={() => setIsCreateOpen(true)}>
+          <Button variant="blue" size="lg" className="font-bold gap-2" onClick={() => setIsCreateOpen(true)}>
             <RiFolderAddLine size={20} /> New Folder
           </Button>
           <Button variant="warning" size="lg" className="font-bold gap-2 hover:text-white hover:bg-amber-500" onClick={() => router.push('/upload')}>
@@ -332,6 +329,8 @@ const FileManager = () => {
         onItemsPerPageChange={handleItemsPerPageChange}
         publicOnly={publicOnly}
         onPublicOnlyChange={setPublicOnly}
+        premiumOnly={premiumOnly}
+        onPremiumOnlyChange={setPremiumOnly}
         folders={folders}
         selectedCount={selectedItems.length}
         bulkMoveDestination={bulkMoveDestination}
@@ -429,6 +428,12 @@ const FileManager = () => {
             : `This will permanently delete this ${deleteTarget?.item?.kind}. This action cannot be undone.`
         }
         confirmLabel="Delete"
+      />
+
+      <ShareLinkModal
+        item={shareTarget}
+        isOpen={!!shareTarget}
+        onClose={() => setShareTarget(null)}
       />
     </div>
   );

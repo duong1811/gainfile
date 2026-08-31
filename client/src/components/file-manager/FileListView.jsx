@@ -1,7 +1,7 @@
 import React from 'react';
 import { RiArrowDownSLine, RiArrowUpSLine, RiExpandUpDownLine, RiFolder3Fill } from 'react-icons/ri';
-import { Badge } from '../ui/Badge';
 import { Checkbox } from '../ui/Checkbox';
+import { Switch } from '../ui/Switch';
 import FileItemActionsMenu from './FileItemActionsMenu';
 import FileTypeIcon from './FileTypeIcon';
 
@@ -39,17 +39,17 @@ const FileListView = ({
   onSetAccess,
 }) => (
   <div className="overflow-x-auto rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)]">
-    <table className="w-full min-w-[800px] text-left text-sm">
+    <table className="w-full min-w-[960px] text-left text-sm">
       <thead className="border-b border-[var(--glass-border)] text-xs uppercase tracking-wider text-[var(--text-secondary)]">
         <tr>
           <th className="w-10 px-5 py-4">
             <Checkbox checked={allSelected} onCheckedChange={onToggleSelectAll} />
           </th>
           <th className="px-5 py-4"><SortableHeader label="Name" field="name" sortBy={sortBy} onToggleSort={onToggleSort} /></th>
-          <th className="px-5 py-4">Type</th>
           <th className="px-5 py-4"><SortableHeader label="Size" field="size" sortBy={sortBy} onToggleSort={onToggleSort} /></th>
           <th className="px-5 py-4"><SortableHeader label="Modified" field="date" sortBy={sortBy} onToggleSort={onToggleSort} /></th>
-          <th className="px-5 py-4">Status</th>
+          <th className="px-5 py-4">Published</th>
+          <th className="px-5 py-4">Premium</th>
           <th className="w-14 px-5 py-4" />
         </tr>
       </thead>
@@ -71,19 +71,20 @@ const FileListView = ({
                 <span className="font-bold">{item.name}</span>
               </div>
             </td>
-            <td className="px-5 py-4 capitalize text-[var(--text-secondary)]">{item.kind === 'folder' ? 'Folder' : item.type}</td>
             <td className="px-5 py-4 font-mono text-xs text-[var(--text-secondary)]">{item.size}</td>
             <td className="px-5 py-4 text-xs text-[var(--text-secondary)]">{item.updated}</td>
             <td className="px-5 py-4">
               {item.kind === 'file' && (
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <Badge variant="outline" color={item.published ? 'success' : 'neutral'} size="xs">
-                    {item.published ? 'Published' : 'Unpublished'}
-                  </Badge>
-                  <Badge variant="outline" color={item.access === 'premium' ? 'warning' : 'primary'} size="xs">
-                    {item.access === 'premium' ? 'Premium' : 'Free'}
-                  </Badge>
-                </div>
+                <label className="flex items-center gap-2" onClick={(event) => event.stopPropagation()}>
+                  <Switch checked={item.published} onChange={() => onTogglePublish(item)} variant="emerald" />
+                </label>
+              )}
+            </td>
+            <td className="px-5 py-4">
+              {item.kind === 'file' && (
+                <label className="flex items-center gap-2" onClick={(event) => event.stopPropagation()}>
+                  <Switch checked={item.access === 'premium'} onChange={(checked) => onSetAccess(item, checked ? 'premium' : 'free')} variant="default" />
+                </label>
               )}
             </td>
             <td className="px-5 py-4">

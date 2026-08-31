@@ -8,7 +8,9 @@ const FileSearchBar = ({ value, onChange }) => (
       type="text"
       value={value}
       onChange={onChange}
+      name="search"
       placeholder="Search files and folders..."
+      autoComplete="new-search"
       className="w-full rounded-xl border border-[var(--glass-border)] bg-[var(--bg-primary)] py-2.5 pl-11 pr-4 text-sm font-medium outline-none transition-colors focus:border-[var(--aurora-1)]"
     />
   </label>

@@ -31,6 +31,8 @@ const FileManagerToolbar = ({
     onItemsPerPageChange,
     publicOnly,
     onPublicOnlyChange,
+    premiumOnly,
+    onPremiumOnlyChange,
     folders,
     selectedCount = 0,
     bulkMoveDestination,
@@ -69,7 +71,7 @@ const FileManagerToolbar = ({
                                 key={size}
                                 type="button"
                                 onClick={() => onItemsPerPageChange(size)}
-                                className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-colors hover:bg-emerald-500/70 hover:text-white ${itemsPerPage === size ? 'bg-emerald-500 text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
+                                className={`rounded-lg px-3 py-1 text-xs font-bold transition-colors hover:bg-emerald-500/70 hover:text-white ${itemsPerPage === size ? 'bg-emerald-500 text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
                             >
                                 {size}
                             </button>
@@ -80,6 +82,11 @@ const FileManagerToolbar = ({
                 <label className="flex items-center gap-2">
                     <Switch checked={publicOnly} onChange={onPublicOnlyChange} variant="emerald" />
                     <span className="text-xs font-bold text-[var(--text-secondary)]">Public only</span>
+                </label>
+
+                <label className="flex items-center gap-2">
+                    <Switch checked={premiumOnly} onChange={onPremiumOnlyChange} variant="default" />
+                    <span className="text-xs font-bold text-[var(--text-secondary)]">Premium only</span>
                 </label>
 
                 <label className="relative flex items-center">
