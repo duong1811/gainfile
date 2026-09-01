@@ -44,7 +44,7 @@ const Tables = () => {
   };
 
   return (
-    <div className="p-6 md:p-12 min-h-[calc(100vh-100px)] text-[var(--text-primary)] space-y-10 z-0 relative">
+    <div className="py-6 md:py-12 min-h-[calc(100vh-100px)] text-[var(--text-primary)] space-y-10 z-0 relative">
       <div>
         <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-2">Data Tables</h1>
         <p className="text-[var(--text-secondary)]">Complex grids with selection, pagination, search bars, and empty states.</p>

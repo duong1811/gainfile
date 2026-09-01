@@ -54,7 +54,7 @@ const Wellness = () => {
   };
 
   return (
-    <div className="p-6 md:p-12 min-h-[calc(100vh-100px)] text-[var(--text-primary)] relative">
+    <div className="py-6 md:py-12 min-h-[calc(100vh-100px)] text-[var(--text-primary)] relative">
       <motion.div
         className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6"
         initial={{ y: -20, opacity: 0 }}

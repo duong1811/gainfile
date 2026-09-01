@@ -1,14 +1,28 @@
-import React from 'react';
-import { RiFolder3Fill, RiHome5Line } from 'react-icons/ri';
+import React, { useState } from 'react';
+import { RiFolder3Fill, RiHome5Line, RiSearchLine } from 'react-icons/ri';
 import { Modal } from '../ui/Modal';
 
 const MoveCopyModal = ({ target, folders, onSelectDestination, onClose }) => {
+  const [search, setSearch] = useState('');
+  const [openedKey, setOpenedKey] = useState(null);
+
+  const targetKey = target ? `${target.mode}-${target.item.id}` : null;
+  if (targetKey !== openedKey) {
+    setOpenedKey(targetKey);
+    setSearch('');
+  }
+
   if (!target) return null;
 
   const destinations = [
     { id: null, name: 'My Files' },
     ...folders.filter((folder) => folder.id !== target.currentFolder),
   ];
+
+  const query = search.trim().toLowerCase();
+  const filteredDestinations = query
+    ? destinations.filter((destination) => destination.name.toLowerCase().includes(query))
+    : destinations;
 
   return (
     <Modal
@@ -19,8 +33,20 @@ const MoveCopyModal = ({ target, folders, onSelectDestination, onClose }) => {
       variant="aurora"
     >
       <p className="mb-4 text-sm text-[var(--text-secondary)]">Choose a destination folder.</p>
+      <label className="relative mb-3 flex w-full items-center">
+        <RiSearchLine className="pointer-events-none absolute left-4 text-[var(--text-secondary)]" size={18} />
+        <input
+          type="text"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          name="destination-search"
+          placeholder="Search folders..."
+          autoComplete="off"
+          className="w-full rounded-xl border border-[var(--glass-border)] bg-[var(--bg-primary)] py-2.5 pl-11 pr-4 text-sm font-medium outline-none transition-colors focus:border-[var(--aurora-1)]"
+        />
+      </label>
       <div className="flex max-h-72 flex-col gap-2 overflow-y-auto">
-        {destinations.map((destination) => (
+        {filteredDestinations.map((destination) => (
           <button
             key={destination.id ?? 'root'}
             type="button"
@@ -35,6 +61,9 @@ const MoveCopyModal = ({ target, folders, onSelectDestination, onClose }) => {
             {destination.name}
           </button>
         ))}
+        {filteredDestinations.length === 0 && (
+          <p className="py-6 text-center text-sm text-[var(--text-secondary)]">No folders found.</p>
+        )}
       </div>
     </Modal>
   );

@@ -289,7 +289,7 @@ const FileManager = () => {
   };
 
   return (
-    <div className="p-6 md:p-12 min-h-[calc(100vh-100px)] text-[var(--text-primary)] relative">
+    <div className="py-6 md:py-12 min-h-[calc(100vh-100px)] text-[var(--text-primary)] relative">
       <motion.div
         className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4"
         initial={{ y: -20, opacity: 0 }}
@@ -312,6 +312,20 @@ const FileManager = () => {
       </motion.div>
 
       <FileManagerStats stats={stats} />
+
+      {!currentFolder && (
+        <QuickFoldersSection
+          quickFolders={quickFolders}
+          filesByLocation={filesByLocation}
+          onOpenFolder={openFolder}
+          onMove={openMoveModal}
+          onCopy={openCopyModal}
+          onGetLink={setShareTarget}
+          onDelete={requestDeleteItem}
+          onTogglePublish={togglePublish}
+          onSetAccess={setFileAccess}
+        />
+      )}
 
       <div className="mb-6">
         <FileSearchBar value={searchTerm} onChange={handleSearchChange} />

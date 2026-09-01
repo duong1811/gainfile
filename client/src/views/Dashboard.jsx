@@ -220,7 +220,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-100px)] flex-col p-6 text-[var(--text-primary)] md:p-12">
+    <div className="flex min-h-[calc(100vh-100px)] flex-col py-6 text-[var(--text-primary)] md:py-12">
       <motion.div
         className="relative hidden mb-6 overflow-hidden rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] px-4 py-3"
         initial={{ opacity: 0, y: 12 }}

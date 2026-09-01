@@ -13,13 +13,13 @@ const secondaryLinks = [
   { href: '/faq', label: 'FAQ' },
 ];
 
-const Bottombar = () => {
+const Footer = () => {
   const pathname = usePathname();
   const currentYear = new Date().getFullYear();
 
   return (
     <motion.footer
-      className="relative shrink-0 border-t border-[var(--glass-border)] glass-card px-6 py-4 backdrop-blur-xl md:px-12"
+      className="relative shrink-0 border-t border-[var(--glass-border)] bg-[var(--bg-primary)] px-6 py-4 backdrop-blur-xl md:px-12"
       initial={{ y: 30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
@@ -58,5 +58,5 @@ const Bottombar = () => {
   );
 };
 
-export default Bottombar;
+export default Footer;
 

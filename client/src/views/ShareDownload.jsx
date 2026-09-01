@@ -15,7 +15,7 @@ import {
 } from 'react-icons/ri';
 import Topbar from '../components/Topbar';
 import HorizontalMenu from '../components/HorizontalMenu';
-import Bottombar from '../components/Bottombar';
+import Bottombar from '../components/Footer';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';

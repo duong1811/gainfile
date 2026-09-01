@@ -6,7 +6,7 @@ import { useTheme } from '@/context/ThemeContext';
 import Sidebar from '@/components/Sidebar';
 import HorizontalMenu from '@/components/HorizontalMenu';
 import Topbar from '@/components/Topbar';
-import Bottombar from '@/components/Bottombar';
+import Bottombar from '@/components/Footer';
 
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -26,7 +26,7 @@ export default function DashboardLayout({ children }) {
   }, []);
 
   return (
-    <div className={`app-container ${!isHorizontalMenu && sidebarOpen ? 'sidebar-open' : ''} ${!isHorizontalMenu && isSidebarCollapsed ? 'sidebar-collapsed' : ''}`} dir={isRTL ? "rtl" : "ltr"}>
+    <div className={`${!isHorizontalMenu && sidebarOpen ? 'sidebar-open' : ''} ${!isHorizontalMenu && isSidebarCollapsed ? 'sidebar-collapsed' : ''}`} dir={isRTL ? "rtl" : "ltr"}>
       <div className="aurora-bg" />
       {!isHorizontalMenu && <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />}
       
@@ -43,7 +43,7 @@ export default function DashboardLayout({ children }) {
         ) : (
           <Topbar />
         )}
-        <div className="min-w-0 flex-1 md:px-10">
+        <div className="min-w-0 flex-1 container mx-auto">
           {children}
         </div>
         <Bottombar />

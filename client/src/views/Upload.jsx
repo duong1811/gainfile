@@ -66,7 +66,7 @@ const Upload = ({ initialMethod = 'device' }) => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-100px)] p-6 text-[var(--text-primary)] md:p-12">
+    <div className="min-h-[calc(100vh-100px)] py-6 text-[var(--text-primary)] md:py-12">
     <motion.div
       className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
       initial={{ y: -20, opacity: 0 }}

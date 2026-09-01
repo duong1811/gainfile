@@ -54,7 +54,7 @@ const premiumBenefits = [
   'SAFE checkout',
 ];
 
-const Deals = () => {
+const Deals = ({ embedded = false }) => {
   const router = useRouter();
   const [selectedOptions, setSelectedOptions] = useState(() =>
     Object.fromEntries(planGroups.map((group) => [group.duration, 0]))
@@ -83,19 +83,21 @@ const Deals = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-200px)] p-6 text-[var(--text-primary)] md:px-12">
-      <motion.div
-        className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-      >
-        <div>
-          <h1 className="mb-2 text-4xl font-bold tracking-tight md:text-5xl">
-            Premium <span className="text-gradient from-amber-400 to-orange-500">Plan</span>
-          </h1>
-          <p className="text-lg text-[var(--text-secondary)]">Select a plan that matches your storage and bandwidth needs.</p>
-        </div>
-      </motion.div>
+    <div className={`${embedded ? '' : 'min-h-[calc(100vh-200px)] py-6 md:py-12'} text-[var(--text-primary)]`}>
+      {!embedded && (
+        <motion.div
+          className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+        >
+          <div>
+            <h1 className="mb-2 text-4xl font-bold tracking-tight md:text-5xl">
+              Premium <span className="text-gradient from-amber-400 to-orange-500">Plan</span>
+            </h1>
+            <p className="text-lg text-[var(--text-secondary)]">Select a plan that matches your storage and bandwidth needs.</p>
+          </div>
+        </motion.div>
+      )}
 
       {/* SHARED PREMIUM BENEFITS */}
       <div className="mb-8 flex flex-col items-center gap-3 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] px-6 py-4 sm:flex-row sm:justify-center sm:gap-x-6">

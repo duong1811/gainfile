@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   RiCalendarLine,
+  RiCheckLine,
   RiFileCopyLine,
   RiGlobalLine,
   RiLockLine,
@@ -28,6 +29,8 @@ const ShareLinkModal = ({ item, isOpen, onClose }) => {
   const [links, setLinks] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [openedItemId, setOpenedItemId] = useState(null);
+  const [copiedId, setCopiedId] = useState(null);
+  const [refreshingId, setRefreshingId] = useState(null);
 
   if (isOpen && item?.id !== openedItemId) {
     setOpenedItemId(item?.id ?? null);
@@ -35,6 +38,18 @@ const ShareLinkModal = ({ item, isOpen, onClose }) => {
     setEditingId(null);
     setLinks(createSeedLinks());
   }
+
+  useEffect(() => {
+    if (!copiedId) return undefined;
+    const timer = setTimeout(() => setCopiedId(null), 1500);
+    return () => clearTimeout(timer);
+  }, [copiedId]);
+
+  useEffect(() => {
+    if (!refreshingId) return undefined;
+    const timer = setTimeout(() => setRefreshingId(null), 600);
+    return () => clearTimeout(timer);
+  }, [refreshingId]);
 
   const updateForm = (key) => (event) => setForm((current) => ({ ...current, [key]: event.target.value }));
 
@@ -70,10 +85,13 @@ const ShareLinkModal = ({ item, isOpen, onClose }) => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
       navigator.clipboard.writeText(url).catch(() => {});
     }
+    setCopiedId(link.id);
   };
 
   const handleRegenerate = (linkId) => {
-    setLinks((current) => current.map((link) => (link.id === linkId ? { ...link, id: createToken(), downloads: 0 } : link)));
+    const newId = createToken();
+    setRefreshingId(newId);
+    setLinks((current) => current.map((link) => (link.id === linkId ? { ...link, id: newId, downloads: 0 } : link)));
   };
 
   const handleEdit = (link) => {
@@ -98,6 +116,20 @@ const ShareLinkModal = ({ item, isOpen, onClose }) => {
         <h4 className="truncate text-lg font-bold">{item?.name}</h4>
         <span className="text-sm text-[var(--text-secondary)]">{item?.id}</span>
         <div className="rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] p-5 space-y-4">
+          {editingId && (
+            <div className="flex items-center justify-between gap-2 bg-[var(--aurora-1)]/10 py-2 text-xs font-semibold text-[var(--text-primary)]">
+              <span className="truncate">
+                Editing token: <span className="font-mono text-emerald-500">{editingId}</span>
+              </span>
+              <button
+                type="button"
+                onClick={() => { setEditingId(null); setForm(emptyForm); }}
+                className="shrink-0 text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <Label htmlFor="password-video">Password</Label>
@@ -141,7 +173,7 @@ const ShareLinkModal = ({ item, isOpen, onClose }) => {
           </Button>
         </div>
 
-        <div className="space-y-3">
+        <div className="max-h-[220px] space-y-3 overflow-y-auto pr-1">
           {links.map((link) => (
             <div key={link.id} className="rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] p-4">
               <div className="flex flex-wrap items-center gap-2 text-xs text-[var(--text-secondary)]">
@@ -158,11 +190,17 @@ const ShareLinkModal = ({ item, isOpen, onClose }) => {
                 {link.premiumOnly && <Badge variant="outline" color="warning" size="xs">Premium</Badge>}
               </div>
               <div className="mt-3 flex items-center gap-2">
-                <Button variant="glass" size="icon-xs" onClick={() => handleCopy(link)} title="Copy link">
-                  <RiFileCopyLine size={16} />
+                <Button
+                  variant="glass"
+                  size="icon-xs"
+                  onClick={() => handleCopy(link)}
+                  title={copiedId === link.id ? 'Copied!' : 'Copy link'}
+                  className={copiedId === link.id ? 'text-emerald-500' : ''}
+                >
+                  {copiedId === link.id ? <RiCheckLine size={16} /> : <RiFileCopyLine size={16} />}
                 </Button>
                 <Button variant="glass" size="icon-xs" onClick={() => handleRegenerate(link.id)} title="Regenerate link" disabled={!link.alive}>
-                  <RiRefreshLine size={16} />
+                  <RiRefreshLine size={16} className={refreshingId === link.id ? 'animate-spin' : ''} />
                 </Button>
                 <Button variant="glass" size="icon-xs" onClick={() => handleEdit(link)} title="Edit link" disabled={!link.alive}>
                   <RiPencilLine size={16} />

@@ -14,7 +14,7 @@ import {
 
 const AdminPanel = () => {
   return (
-    <div className="p-6 md:p-12 min-h-[calc(100vh-100px)] text-[var(--text-primary)]">
+    <div className="py-6 md:py-12 min-h-[calc(100vh-100px)] text-[var(--text-primary)]">
       <motion.div
         className="mb-12"
         initial={{ y: -20, opacity: 0 }}

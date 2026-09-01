@@ -26,7 +26,7 @@ const Forms = () => {
   const [radioVal, setRadioVal] = useState('premium');
 
   return (
-    <div className="p-6 md:p-12 min-h-[calc(100vh-100px)] text-[var(--text-primary)] space-y-10 z-0 relative">
+    <div className="py-6 md:py-12 min-h-[calc(100vh-100px)] text-[var(--text-primary)] space-y-10 z-0 relative">
       <div>
         <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-2">Form Elements</h1>
         <p className="text-[var(--text-secondary)]">A comprehensive suite of standardized inputs, switches, and advanced controls.</p>

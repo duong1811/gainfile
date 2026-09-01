@@ -7,7 +7,7 @@ import FileItemActionsMenu from './FileItemActionsMenu';
 import FileTypeIcon from './FileTypeIcon';
 
 const FileGridView = ({ items, onOpenFolder, isSelected, onToggleSelect, onMove, onCopy, onGetLink, onDelete, onTogglePublish, onSetAccess }) => (
-  <div className="grid grid-cols-2 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+  <div className="grid grid-cols-2 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
     {items.map((item, index) => (
       <Card
         key={`${item.kind}-${item.id}`}
