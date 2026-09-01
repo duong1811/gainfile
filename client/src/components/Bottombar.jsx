@@ -19,12 +19,12 @@ const Bottombar = () => {
 
   return (
     <motion.footer
-      className="relative shrink-0 border-t border-[var(--glass-border)] bg-[var(--bg-primary)]/70 px-6 py-4 backdrop-blur-xl md:px-12"
+      className="relative shrink-0 border-t border-[var(--glass-border)] glass-card px-6 py-4 backdrop-blur-xl md:px-12"
       initial={{ y: 30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
     >
-      <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
+      <div className="flex flex-col items-center justify-between gap-4">
 
         <nav aria-label="Secondary navigation">
           <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
@@ -36,7 +36,7 @@ const Bottombar = () => {
                   <Link
                     href={link.href}
                     aria-current={isActive ? 'page' : undefined}
-                    className={`text-xs font-semibold transition-colors ${
+                    className={`text-sm font-semibold transition-colors ${
                       isActive
                         ? 'text-[var(--aurora-1)]'
                         : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
