@@ -41,12 +41,6 @@ const FEATURES = [
   },
 ];
 
-const UPLOAD_METHODS = [
-  { icon: RiUploadCloud2Line, label: 'Device' },
-  { icon: RiCloudLine, label: 'Cloud' },
-  { icon: RiServerLine, label: 'FTP' },
-  { icon: RiGlobalLine, label: 'Remote URL' },
-];
 
 const STEPS = [
   {
@@ -116,17 +110,6 @@ const LandingPage = () => (
             </Button>
           </div>
 
-          <div className="mx-auto mt-14 grid max-w-3xl grid-cols-2 gap-3 md:grid-cols-4">
-            {UPLOAD_METHODS.map(({ icon: Icon, label }) => (
-              <div
-                key={label}
-                className="flex items-center justify-center gap-2 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] px-4 py-3 text-sm font-bold"
-              >
-                <Icon className="text-[var(--aurora-1)]" size={18} />
-                {label}
-              </div>
-            ))}
-          </div>
         </motion.div>
       </section>
 
