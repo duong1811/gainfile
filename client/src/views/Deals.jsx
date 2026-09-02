@@ -11,53 +11,12 @@ import {
   RiVipCrown2Line,
 } from 'react-icons/ri';
 import { Modal } from '../components/ui/Modal';
+import { premiumBenefits, premiumPlanGroups } from '../components/premium/premiumPlanData';
 
-const planGroups = [
-  { 
-    duration: 30, 
-    options: [
-      { tier: 'Pro', bandwidth: '1TB', storage: '1TB', originalPrice: 20, price: 14 },
-      { tier: 'Max', bandwidth: '2TB', storage: '1TB', originalPrice: 30, price: 21 },
-    ] 
-  },
-  { 
-    duration: 90, 
-    options: [
-      { tier: 'Pro', bandwidth: '3TB', storage: '3TB', originalPrice: 50, price: 35 },
-      { tier: 'Max', bandwidth: '6TB', storage: '3TB', originalPrice: 80, price: 56 },
-    ] 
-  },
-  { 
-    duration: 180, 
-    options: [
-      { tier: 'Pro', bandwidth: '6TB', storage: '6TB', originalPrice: 90, price: 63 },
-      { tier: 'Max', bandwidth: '10TB', storage: '6TB', originalPrice: 130, price: 91 },
-    ] 
-  },
-  { 
-    duration: 365, 
-    options: [
-      { tier: 'Pro', bandwidth: '12TB', storage: '12TB', originalPrice: 160, price: 112 },
-      { tier: 'Max', bandwidth: '30TB', storage: '12TB', originalPrice: 400, price: 210 },
-    ] 
-  },
-];
-
-const premiumBenefits = [
-  'Maximum download speed',
-  'Secure downloads',
-  'Simultaneous downloads',
-  'Unlimited File Inactivity',
-  'No advertising',
-  'No Waiting time',
-  'Priority support',
-  'SAFE checkout',
-];
-
-const Deals = ({ embedded = false }) => {
+const Deals = () => {
   const router = useRouter();
   const [selectedOptions, setSelectedOptions] = useState(() =>
-    Object.fromEntries(planGroups.map((group) => [group.duration, 0]))
+    Object.fromEntries(premiumPlanGroups.map((group) => [group.duration, 0]))
   );
   const [showLogin, setShowLogin] = useState(false);
 
@@ -83,21 +42,19 @@ const Deals = ({ embedded = false }) => {
   };
 
   return (
-    <div className={`${embedded ? '' : 'min-h-[calc(100vh-200px)] py-6 md:py-12'} text-[var(--text-primary)]`}>
-      {!embedded && (
-        <motion.div
-          className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-        >
-          <div>
-            <h1 className="mb-2 text-4xl font-bold tracking-tight md:text-5xl">
-              Premium <span className="text-gradient from-amber-400 to-orange-500">Plan</span>
-            </h1>
-            <p className="text-lg text-[var(--text-secondary)]">Select a plan that matches your storage and bandwidth needs.</p>
-          </div>
-        </motion.div>
-      )}
+    <div className="min-h-[calc(100vh-200px)] py-6 text-[var(--text-primary)] md:py-12">
+      <motion.div
+        className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+      >
+        <div>
+          <h1 className="mb-2 text-4xl font-bold tracking-tight md:text-5xl">
+            Premium <span className="text-gradient from-amber-400 to-orange-500">Plan</span>
+          </h1>
+          <p className="text-lg text-[var(--text-secondary)]">Select a plan that matches your storage and bandwidth needs.</p>
+        </div>
+      </motion.div>
 
       {/* SHARED PREMIUM BENEFITS */}
       <div className="mb-8 flex flex-col items-center gap-3 rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] px-6 py-4 sm:flex-row sm:justify-center sm:gap-x-6">
@@ -113,7 +70,7 @@ const Deals = ({ embedded = false }) => {
 
       <div className="grid grid-cols-1 gap-10 pb-6 sm:grid-cols-2 xl:grid-cols-4 items-stretch">
         {/* PREMIUM PLAN CARDS */}
-        {planGroups.map((group, index) => {
+        {premiumPlanGroups.map((group, index) => {
           const selectedIndex = selectedOptions[group.duration];
           const selectedPlan = group.options[selectedIndex];
           const isBestValue = group.duration === 180;

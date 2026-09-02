@@ -42,7 +42,7 @@ export default function DashboardLayout({ children }) {
         ) : (
           <Topbar />
         )}
-        <div className="min-w-0 flex-1 container mx-auto">
+        <div className="min-w-0 flex-1 container mx-auto px-3">
           {children}
         </div>
         <Footer />

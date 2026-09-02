@@ -55,6 +55,10 @@ const FtpUpload = () => {
           <h3 className="mt-4 text-lg font-bold">Password protected</h3>
           <p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">Generate a temporary password before connecting. It expires after 24 hours for security.</p>
           <Button type="button" className="mt-6 w-full">Generate FTP password</Button>
+          <div className="mt-6 flex gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-xs leading-5 text-amber-500">
+            <RiInformationLine className="mt-0.5 shrink-0 text-base" />
+            Keep your FTP credentials valid until every active transfer has finished.
+          </div>
           <div className="mt-auto flex gap-3 border-t border-[var(--glass-border)] pt-6 text-xs leading-5 text-[var(--text-secondary)]">
             <RiInformationLine className="mt-0.5 shrink-0 text-base text-[var(--aurora-1)]" />
             Files uploaded to the root directory will automatically appear in My Files after processing.

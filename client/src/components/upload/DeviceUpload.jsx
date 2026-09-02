@@ -4,6 +4,7 @@ import {
   RiDeleteBinLine,
   RiFileLine,
   RiFolderOpenLine,
+  RiInformationLine,
   RiShieldCheckLine,
   RiUploadCloud2Line,
 } from 'react-icons/ri';
@@ -49,21 +50,38 @@ const DeviceUpload = () => {
         <span className="flex items-center gap-2 text-xs font-semibold text-emerald-500"><RiShieldCheckLine /> Encrypted transfer</span>
       </div>
 
+      <div className="mb-5 flex items-start gap-2 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-xs leading-5 text-amber-500">
+        <RiInformationLine className="mt-0.5 shrink-0 text-base" />
+        Keep this tab open while device uploads are active. Closing or refreshing the page may interrupt the transfer.
+      </div>
+
       <input ref={inputRef} type="file" multiple className="hidden" onChange={(event) => addFiles(event.target.files)} />
       <motion.div
         animate={{ scale: isDragging ? 1.01 : 1 }}
+        role="button"
+        tabIndex={0}
+        aria-label="Choose files to upload or drag and drop files here"
+        onClick={() => inputRef.current?.click()}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            inputRef.current?.click();
+          }
+        }}
         onDragEnter={(event) => { event.preventDefault(); setIsDragging(true); }}
         onDragOver={(event) => event.preventDefault()}
         onDragLeave={() => setIsDragging(false)}
         onDrop={handleDrop}
-        className={`flex min-h-64 flex-col items-center justify-center rounded-3xl border-2 border-dashed p-6 text-center transition-colors ${isDragging ? 'border-[var(--aurora-1)] bg-[var(--aurora-1)]/10' : 'border-[var(--glass-border)] bg-[var(--bg-primary)]/40'}`}
+        className={`flex min-h-64 cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed px-2 py-6 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--aurora-1)] ${isDragging ? 'border-[var(--aurora-1)] bg-[var(--aurora-1)]/10' : 'border-[var(--glass-border)] bg-[var(--bg-primary)]/40 hover:border-[var(--aurora-1)] hover:bg-[var(--aurora-1)]/5'}`}
       >
         <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--aurora-1)] to-[var(--aurora-2)] text-3xl text-white shadow-lg shadow-[var(--aurora-1)]/20">
           <RiUploadCloud2Line />
         </div>
         <h3 className="text-lg font-bold">Drag and drop files here</h3>
         <p className="mt-2 max-w-md text-sm text-[var(--text-secondary)]">Any file type is supported. The maximum size depends on your current plan.</p>
-        <Button type="button" variant="glass" className="mt-5" onClick={() => inputRef.current?.click()}><RiFolderOpenLine /> Browse files</Button>
+        <span className="mt-5 inline-flex items-center gap-2 rounded-xl border border-[var(--glass-border)] bg-[var(--bg-primary)]/60 px-4 py-2 text-sm font-semibold">
+          <RiFolderOpenLine /> Browse files
+        </span>
       </motion.div>
 
       {files.length > 0 && (

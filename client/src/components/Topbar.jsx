@@ -39,6 +39,11 @@ const subscribeToAuth = (callback) => {
 
 const getAuthSnapshot = () => window.localStorage.getItem('gainfile-authenticated') === 'true';
 const getServerAuthSnapshot = () => false;
+const currentUser = {
+  name: 'Alexander Pierce',
+  email: 'alexander@trackify.app',
+  plan: 'Professional',
+};
 
 const Topbar = ({ isHorizontalMenu = false, children = null }) => {
   const router = useRouter();
@@ -61,7 +66,7 @@ const Topbar = ({ isHorizontalMenu = false, children = null }) => {
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
     >
-      <div className="flex  container mx-auto w-full items-center justify-between">
+      <div className="flex  px-3 container mx-auto w-full items-center justify-between">
         <div className="flex shrink-0 items-center gap-4">
           {isHorizontalMenu && (
             <Link href="/" className="flex shrink-0 items-center gap-2.5">
@@ -144,20 +149,36 @@ const Topbar = ({ isHorizontalMenu = false, children = null }) => {
               {/* Profile Dropdown */}
               <Dropdown>
                 <DropdownTrigger asChild showChevron={false}>
-                  <button className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--aurora-1)] to-[var(--aurora-2)] p-[2px] cursor-pointer hover:scale-105 transition-transform ml-2 mr-2">
-                    <div className="w-full h-full rounded-full bg-[var(--bg-primary)] flex items-center justify-center relative overflow-hidden">
-                      <RiUser3Line className="text-[var(--aurora-1)] relative z-10" />
-                      <div className="absolute inset-0 bg-[var(--aurora-1)]/10"></div>
-                    </div>
+                  <button
+                    type="button"
+                    aria-label={`Open profile menu for ${currentUser.name}`}
+                    className="ml-2 mr-2 flex cursor-pointer items-center gap-3 rounded-2xl p-1 transition-colors hover:bg-[var(--glass-border)]"
+                  >
+                    <span className="h-10 w-10 shrink-0 rounded-full bg-gradient-to-br from-[var(--aurora-1)] to-[var(--aurora-2)] p-[2px] transition-transform hover:scale-105">
+                      <span className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-[var(--bg-primary)]">
+                        <RiUser3Line className="relative z-10 text-[var(--aurora-1)]" />
+                        <span className="absolute inset-0 bg-[var(--aurora-1)]/10" />
+                      </span>
+                    </span>
+                    <span className="hidden min-w-0 text-left md:block">
+                      <span className="block max-w-36 truncate text-sm font-bold leading-tight text-[var(--text-primary)]">
+                        {currentUser.name}
+                      </span>
+                      <span className="mt-0.5 block text-[10px] font-bold tracking-wider text-[var(--aurora-1)]">
+                        {currentUser.plan} plan
+                      </span>
+                    </span>
+
                   </button>
                 </DropdownTrigger>
                 <DropdownContent align={isRTL ? 'left' : 'right'} width="w-56" offset="mt-4">
                   <DropdownHeader>
-                    <p className="font-bold text-[var(--text-primary)] truncate">Alexander Pierce</p>
-                    <p className="text-[10px] text-[var(--text-secondary)] truncate font-bold uppercase tracking-widest mt-0.5">alexander@trackify.app</p>
+                    <p className="truncate font-bold text-[var(--text-primary)]">{currentUser.name}</p>
+                    <p className="mt-0.5 truncate text-[10px] font-bold tracking-widest text-[var(--text-secondary)]">{currentUser.email}</p>
+                    <p className="mt-2 text-[10px] font-bold tracking-widest text-[var(--aurora-1)]">{currentUser.plan} plan</p>
                   </DropdownHeader>
                   <div className="p-1">
-                    <DropdownItem onClick={() => router.push('/settings')} className="gap-2">
+                    <DropdownItem onClick={() => router.push('/dashboard')} className="gap-2">
                       <RiSettings4Line size={18} className="opacity-70" />
                       Account Settings
                     </DropdownItem>
@@ -192,4 +213,3 @@ const Topbar = ({ isHorizontalMenu = false, children = null }) => {
 };
 
 export default Topbar;
-

@@ -14,7 +14,7 @@ import {
 } from 'react-icons/ri';
 import Topbar from '../components/Topbar';
 import HorizontalMenu from '../components/HorizontalMenu';
-import Deals from './Deals';
+import LandingPremium from '../components/landing/LandingPremium';
 import { Button } from '../components/ui/Button';
 import { Card, CardDescription, CardTitle } from '../components/ui/Card';
 
@@ -72,7 +72,7 @@ const LandingPage = () => (
 
     <motion.main
       className="main-content flex flex-col"
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
@@ -193,7 +193,7 @@ const LandingPage = () => (
               One-time purchases with no automatic renewal. Choose Pro or Max for the period that fits your needs.
             </p>
           </div>
-          <Deals embedded />
+          <LandingPremium />
         </div>
       </section>
 

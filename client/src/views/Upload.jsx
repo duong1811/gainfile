@@ -7,7 +7,6 @@ import {
   RiCloudLine,
   RiFolder3Fill,
   RiGlobalLine,
-  RiHardDrive2Line,
   RiInformationLine,
   RiSearchLine,
   RiServerLine,
@@ -15,7 +14,6 @@ import {
 } from 'react-icons/ri';
 import DeviceUpload from '../components/upload/DeviceUpload';
 import RemoteUrlUpload from '../components/upload/RemoteUrlUpload';
-import CloudUpload from '../components/upload/CloudUpload';
 import FtpUpload from '../components/upload/FtpUpload';
 import { Card } from '../components/ui/Card';
 import { Progress } from '../components/ui/Progress';
@@ -27,7 +25,6 @@ import { initialFolders } from '../components/file-manager/fileManagerData';
 const uploadMethods = [
   { value: 'device', label: 'Device', icon: RiUploadCloud2Line },
   { value: 'remote', label: 'Remote URL', icon: RiGlobalLine },
-  { value: 'cloud', label: 'Cloud', icon: RiCloudLine },
   { value: 'ftp', label: 'FTP', icon: RiServerLine },
 ];
 
@@ -88,7 +85,9 @@ const Upload = ({ initialMethod = 'device' }) => {
               </span>
               <div className="min-w-0 flex-1">
                 <label htmlFor="upload-destination" className="text-sm font-bold">Destination folder</label>
-                <p className="mt-1 text-xs text-[var(--text-secondary)]">All files in this upload will be saved to the selected folder.</p>
+                <p className="mt-1 text-xs text-[var(--text-secondary)]">
+                  Confirm the destination and available storage before starting. All uploaded files will be saved here.
+                </p>
               </div>
               <div className="w-full shrink-0 sm:w-72">
                 <Dropdown className="w-full block">
@@ -156,7 +155,6 @@ const Upload = ({ initialMethod = 'device' }) => {
             </TabsList>
             <TabsContent value="device"><DeviceUpload /></TabsContent>
             <TabsContent value="remote"><RemoteUrlUpload /></TabsContent>
-            <TabsContent value="cloud"><CloudUpload /></TabsContent>
             <TabsContent value="ftp"><FtpUpload /></TabsContent>
           </Tabs>
         </div>

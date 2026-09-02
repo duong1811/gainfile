@@ -20,15 +20,7 @@ import {
   RiSettingsLine,
   RiHardDrive2Line,
   RiSpeedUpLine,
-  RiVipCrown2Line,
-  RiUser3Line,
-  RiShieldKeyholeLine,
-  RiShoppingBag3Line,
-  RiCustomerService2Line,
-  RiLockPasswordLine,
-  RiMailLine,
-  RiCalendarCheckLine,
-  RiExternalLinkLine
+  RiVipCrown2Line
 } from 'react-icons/ri';
 import ReactECharts from 'echarts-for-react';
 import { useTheme } from '../context/ThemeContext';
@@ -50,7 +42,7 @@ import {
   DropdownItem,
 } from '../components/ui/Dropdown';
 import { Progress } from '../components/ui/Progress';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/Tabs';
+import MyAccount from '../components/dashboard/MyAccount';
 
 const colorConfigs = {
   aurora: {
@@ -356,83 +348,7 @@ const Dashboard = () => {
           <p className="mt-1 text-sm text-[var(--text-secondary)]">Manage your profile, plan, security, and support.</p>
         </div>
 
-        <Tabs defaultValue="profile" orientation="vertical">
-          <TabsList>
-            <TabsTrigger value="profile" icon={RiUser3Line}>Profile</TabsTrigger>
-            <TabsTrigger value="premium" icon={RiVipCrown2Line}>Premium Status</TabsTrigger>
-            <TabsTrigger value="security" icon={RiShieldKeyholeLine}>Security</TabsTrigger>
-            <TabsTrigger value="activity" icon={RiHistoryLine}>Activity</TabsTrigger>
-            <TabsTrigger value="purchases" icon={RiShoppingBag3Line}>Purchase History</TabsTrigger>
-            <TabsTrigger value="support" icon={RiCustomerService2Line}>Support</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="profile">
-            <Card padding="lg">
-              <div className="mb-7 flex flex-col gap-5 border-b border-[var(--glass-border)] pb-7 sm:flex-row sm:items-center">
-                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--aurora-1)] to-[var(--aurora-2)] text-3xl font-bold text-white">A</div>
-                <div>
-                  <CardTitle>Alexander Pierce</CardTitle>
-                  <CardDescription className="mt-2 flex items-center gap-2"><RiMailLine /> alexander@gainfile.com</CardDescription>
-                </div>
-                <Button variant="glass" size="sm" className="sm:ms-auto">Edit Profile</Button>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-xl border border-[var(--glass-border)] p-4"><p className="text-xs text-[var(--text-secondary)]">Account ID</p><p className="mt-1 font-mono text-sm font-bold">GF-2026-1048</p></div>
-                <div className="rounded-xl border border-[var(--glass-border)] p-4"><p className="text-xs text-[var(--text-secondary)]">Member since</p><p className="mt-1 text-sm font-bold">August 30, 2026</p></div>
-              </div>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="premium">
-            <Card padding="lg">
-              <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-                <div><CardDescription className="uppercase tracking-widest">Current plan</CardDescription><CardTitle className="mt-2">Free Plan</CardTitle><p className="mt-3 text-sm text-[var(--text-secondary)]">200GB storage · Unlimited bandwidth at 100kbps</p></div>
-                <Button variant="primary" size="lg" as="a" href="/upgrade-plan"><RiVipCrown2Line /> Upgrade Plan</Button>
-              </div>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="security">
-            <Card padding="lg">
-              <CardTitle>Security</CardTitle>
-              <CardDescription className="mt-2">Protect your account and active sessions.</CardDescription>
-              <div className="mt-7 space-y-3">
-                <div className="flex flex-col gap-3 rounded-xl border border-[var(--glass-border)] p-4 sm:flex-row sm:items-center sm:justify-between"><div><p className="flex items-center gap-2 font-bold"><RiLockPasswordLine /> Password</p><p className="mt-1 text-xs text-[var(--text-secondary)]">Last changed 30 days ago</p></div><Button variant="glass" size="sm">Change Password</Button></div>
-                <div className="flex flex-col gap-3 rounded-xl border border-[var(--glass-border)] p-4 sm:flex-row sm:items-center sm:justify-between"><div><p className="flex items-center gap-2 font-bold"><RiShieldKeyholeLine /> Two-factor authentication</p><p className="mt-1 text-xs text-[var(--text-secondary)]">Add an extra layer of security</p></div><Button variant="success" size="sm">Enable</Button></div>
-              </div>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="activity">
-            <Card padding="lg">
-              <CardTitle>Recent Activity</CardTitle>
-              <div className="mt-6 space-y-3">
-                {[['Signed in successfully', 'Today, 09:42 AM'], ['Uploaded a new video', 'Yesterday, 06:15 PM'], ['Account password updated', 'August 12, 2026']].map(([event, date]) => (
-                  <div key={event} className="flex items-center gap-3 rounded-xl border border-[var(--glass-border)] p-4"><RiCalendarCheckLine className="shrink-0 text-emerald-500" /><div><p className="text-sm font-bold">{event}</p><p className="mt-1 text-xs text-[var(--text-secondary)]">{date}</p></div></div>
-                ))}
-              </div>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="purchases">
-            <Card padding="lg">
-              <CardTitle>Purchase History</CardTitle>
-              <CardDescription className="mt-2">Invoices and Premium plan purchases appear here.</CardDescription>
-              <div className="mt-7 rounded-2xl border border-dashed border-[var(--glass-border)] p-10 text-center"><RiShoppingBag3Line className="mx-auto text-3xl text-[var(--text-secondary)]" /><p className="mt-3 font-bold">No purchases yet</p><p className="mt-1 text-sm text-[var(--text-secondary)]">Upgrade to Premium to see your first order.</p></div>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="support">
-            <Card padding="lg">
-              <CardTitle>Support Center</CardTitle>
-              <CardDescription className="mt-2">Get help with uploads, billing, or your account.</CardDescription>
-              <div className="mt-7 grid gap-4 sm:grid-cols-2">
-                <div className="rounded-2xl border border-[var(--glass-border)] p-5"><RiCustomerService2Line className="text-2xl text-[var(--aurora-1)]" /><p className="mt-3 font-bold">Create a ticket</p><p className="mt-1 text-xs text-[var(--text-secondary)]">Average response within 24 hours.</p><Button variant="primary" size="sm" className="mt-5">Open Ticket <RiExternalLinkLine /></Button></div>
-                <div className="rounded-2xl border border-[var(--glass-border)] p-5"><RiHistoryLine className="text-2xl text-[var(--aurora-2)]" /><p className="mt-3 font-bold">My tickets</p><p className="mt-1 text-xs text-[var(--text-secondary)]">Review current and previous requests.</p><Button variant="glass" size="sm" className="mt-5">View Tickets</Button></div>
-              </div>
-            </Card>
-          </TabsContent>
-        </Tabs>
+        <MyAccount />
       </motion.section>
 
 
