@@ -57,7 +57,7 @@ const Topbar = ({ isHorizontalMenu = false, children = null }) => {
 
   return (
     <motion.header
-      className="sticky top-0 z-[1000] glass-card mb-6 flex items-center gap-4 border-b border-[var(--glass-border)] py-4 bg-[var(--bg-primary)]/80 backdrop-blur-xl transition-colors duration-300"
+      className="sticky top-0 z-[1000] glass-card mb-6 flex items-center gap-4 border-b border-[var(--glass-border)] py-4 bg-[var(--bg-primary)]/80 backdrop-blur-xl transition-colors"
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
     >

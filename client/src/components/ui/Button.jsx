@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { cn } from "../../lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all duration-300 aria-disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:hover:translate-y-0 aria-disabled:hover:shadow-none active:scale-95 aria-disabled:active:scale-100",
+  "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-all duration-300 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:hover:translate-y-0 aria-disabled:hover:shadow-none active:scale-95 aria-disabled:active:scale-100",
   {
     variants: {
       variant: {

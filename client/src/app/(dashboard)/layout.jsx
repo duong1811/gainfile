@@ -6,7 +6,7 @@ import { useTheme } from '@/context/ThemeContext';
 import Sidebar from '@/components/Sidebar';
 import HorizontalMenu from '@/components/HorizontalMenu';
 import Topbar from '@/components/Topbar';
-import Bottombar from '@/components/Footer';
+import Footer from '@/components/Footer';
 
 export default function DashboardLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -32,7 +32,6 @@ export default function DashboardLayout({ children }) {
       
       <motion.main 
         className="main-content flex flex-col"
-        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
@@ -46,7 +45,7 @@ export default function DashboardLayout({ children }) {
         <div className="min-w-0 flex-1 container mx-auto">
           {children}
         </div>
-        <Bottombar />
+        <Footer />
       </motion.main>
     </div>
   );

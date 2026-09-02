@@ -10,7 +10,7 @@ const cardVariants = cva(
       variant: {
         default: "bg-[var(--glass-bg)] border-[var(--glass-border)]",
         interactive: "bg-[var(--glass-bg)] border-[var(--glass-border)] hover:bg-black/15 hover:border-[var(--aurora-1)]/50 cursor-pointer group",
-        aurora: "bg-[var(--glass-bg)] border-[var(--glass-border)] before:absolute before:inset-0 before:bg-gradient-to-br before:from-[var(--aurora-1)]/5 before:to-transparent",
+        aurora: "bg-[var(--glass-bg)] border-[var(--glass-border)] before:pointer-events-none before:absolute before:inset-0 before:bg-gradient-to-br before:from-[var(--aurora-1)]/5 before:to-transparent",
         solid: "bg-black/40 backdrop-blur-xl border-[var(--glass-border)]",
       },
       padding: {

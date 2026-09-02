@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
+  RiAlarmWarningLine,
   RiDownloadCloud2Line,
   RiFileCopyLine,
   RiFlashlightFill,
@@ -15,7 +16,7 @@ import {
 } from 'react-icons/ri';
 import Topbar from '../components/Topbar';
 import HorizontalMenu from '../components/HorizontalMenu';
-import Bottombar from '../components/Footer';
+import Footer from '../components/Footer';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
@@ -86,12 +87,26 @@ const DEMO_FILES = {
     password: '1234',
     uploader: 'gainfile user',
   },
+  'demo-expired': {
+    id: 'fil_jj00kk11ll22',
+    name: 'expired-project-archive.zip',
+    type: 'zip',
+    size: '842.6 MB',
+    downloads: 28,
+    public: true,
+    premium: false,
+    password: null,
+    uploader: 'gainfile user',
+    status: 'expired',
+    expiresAt: '2026-08-31T23:59:59Z',
+  },
 };
 
 const DEMO_LINKS = [
   { token: 'demo-public', label: 'Public file' },
   { token: 'demo-premium', label: 'Premium file' },
   { token: 'demo-password', label: 'Password protected' },
+  { token: 'demo-expired', label: 'Expired file' },
 ];
 
 const hashToken = (token) => {
@@ -113,6 +128,12 @@ const formatBytes = (bytes) => {
   } while (value >= 1024 && unitIndex < units.length - 1);
   return `${value.toFixed(1)} ${units[unitIndex]}`;
 };
+
+const formatExpirationDate = (value) => new Intl.DateTimeFormat('en-US', {
+  dateStyle: 'medium',
+  timeStyle: 'short',
+  timeZone: 'UTC',
+}).format(new Date(value));
 
 const buildSharedFile = (token) => {
   if (DEMO_FILES[token]) return DEMO_FILES[token];
@@ -153,12 +174,13 @@ const ShareDownload = () => {
   }
 
   const isUnlocked = !file.password || unlockedToken === token;
+  const isExpired = file.status === 'expired';
 
   useEffect(() => {
-    if (file.premium || !isUnlocked || secondsLeft <= 0) return undefined;
+    if (isExpired || file.premium || !isUnlocked || secondsLeft <= 0) return undefined;
     const timer = setTimeout(() => setSecondsLeft((current) => current - 1), 1000);
     return () => clearTimeout(timer);
-  }, [secondsLeft, file.premium, isUnlocked]);
+  }, [secondsLeft, file.premium, isExpired, isUnlocked]);
 
   const isReady = secondsLeft <= 0;
   const progress = Math.round(((COUNTDOWN_SECONDS - secondsLeft) / COUNTDOWN_SECONDS) * 100);
@@ -184,7 +206,6 @@ const ShareDownload = () => {
       <div className="aurora-bg" />
       <motion.main
         className="main-content flex flex-col"
-        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
       >
@@ -229,11 +250,28 @@ const ShareDownload = () => {
               <RiFileCopyLine size={14} /> Copy file ID <span className="font-mono text-[var(--text-primary)]">({file.id})</span>
             </button>
 
-            <Badge variant="soft" color="success" size="sm" className="mx-auto mt-5 gap-1.5">
-              <RiShieldCheckLine size={14} /> Secure connection verified
+            <Badge variant="soft" color={isExpired ? 'danger' : 'success'} size="sm" className="mx-auto mt-5 gap-1.5">
+              {isExpired ? <RiAlarmWarningLine size={14} /> : <RiShieldCheckLine size={14} />}
+              {isExpired ? 'File expired' : 'Secure connection verified'}
             </Badge>
 
-            {!isUnlocked ? (
+            {isExpired ? (
+              <div className="mt-8 space-y-5">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-rose-500/30 bg-rose-500/10 text-rose-500">
+                  <RiAlarmWarningLine size={32} />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-[var(--text-primary)]">This file is no longer available</h2>
+                  <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[var(--text-secondary)]">
+                    The file expired on {formatExpirationDate(file.expiresAt)}. Downloads and access requests have
+                    been disabled. Ask the uploader to create a new share link.
+                  </p>
+                </div>
+                <Button as={Link} href="/" variant="glass" className="font-bold">
+                  Back to Gainfile
+                </Button>
+              </div>
+            ) : !isUnlocked ? (
               <div className="mt-8 space-y-4">
                 <Badge variant="outline" color="info" size="sm" className="mx-auto gap-1.5">
                   <RiLockLine size={14} /> Password protected
@@ -268,7 +306,7 @@ const ShareDownload = () => {
                   This file is only available to Premium members. Upgrade your plan or log in to an eligible account to download it.
                 </p>
                 <div className="flex flex-col justify-center gap-3 sm:flex-row">
-                  <Button as={Link} href="/pricing" variant="warning" className="gap-2 font-bold">
+                  <Button as={Link} href="/upgrade-plan" variant="warning" className="gap-2 font-bold">
                     <RiVipCrownLine size={18} /> Upgrade Plan
                   </Button>
                   <Button as={Link} href="/login" variant="glass" className="gap-2 font-bold">
@@ -298,7 +336,7 @@ const ShareDownload = () => {
                   <RiSpeedUpLine size={20} className="shrink-0" />
                   <p>
                     Free downloads are limited to <strong>50 KB/s</strong>.{' '}
-                    <Link href="/pricing" className="font-bold underline hover:text-amber-400">Upgrade your plan</Link> for full, unthrottled speed and no waiting.
+                    <Link href="/upgrade-plan" className="font-bold underline hover:text-amber-400">Upgrade your plan</Link> for full, unthrottled speed and no waiting.
                   </p>
                 </div>
 
@@ -312,7 +350,7 @@ const ShareDownload = () => {
           </Card>
         </div>
 
-        <Bottombar />
+        <Footer />
       </motion.main>
     </div>
   );
