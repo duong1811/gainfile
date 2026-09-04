@@ -157,7 +157,7 @@ const MyAccount = () => {
       )}
 
       <Tabs defaultValue="profile" orientation="vertical" className="items-stretch">
-        <TabsList className="md:self-stretch md:justify-between">
+        <TabsList className="grid grid-cols-2 gap-2 space-y-0 md:flex md:w-64 md:flex-col md:gap-0 md:space-y-2 md:self-stretch md:justify-between">
           <TabsTrigger value="profile" icon={RiUser3Line}>Profile</TabsTrigger>
           <TabsTrigger value="premium" icon={RiVipCrown2Line}>Plan & Usage</TabsTrigger>
           <TabsTrigger value="security" icon={RiShieldKeyholeLine}>Security</TabsTrigger>

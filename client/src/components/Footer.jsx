@@ -6,7 +6,6 @@ const secondaryLinks = [
   { href: '/about-us', label: 'About Us' },
   { href: '/privacy-policy', label: 'Privacy Policy' },
   { href: '/dmca', label: 'DMCA' },
-  { href: '/child-abuse-policy', label: 'Child Abuse Policy' },
   { href: '/terms-of-service', label: 'Terms of Service' },
   { href: '/report-abuse', label: 'Report Abuse' },
   { href: '/api', label: 'API' },
@@ -59,4 +58,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

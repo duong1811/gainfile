@@ -20,7 +20,9 @@ import {
   RiSettingsLine,
   RiHardDrive2Line,
   RiSpeedUpLine,
-  RiVipCrown2Line
+  RiVipCrown2Line,
+  RiUploadCloud2Line,
+  RiFileList3Line
 } from 'react-icons/ri';
 import ReactECharts from 'echarts-for-react';
 import { useTheme } from '../context/ThemeContext';
@@ -244,24 +246,10 @@ const Dashboard = () => {
             Welcome back, Alexander! <RiFireLine className="inline-block text-orange-500 animate-pulse pb-1" />
           </h1>
         </div>
-      </motion.div>
-
-
-      <motion.div
-        className="flex flex-wrap gap-4 mb-8"
-        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-      >
-        <Button variant="glass" size="sm" className="px-4 font-bold">
-          <RiUserAddLine className="text-[var(--aurora-1)]" /> Invite User
-        </Button>
-        <Button variant="glass" size="sm" className="px-4 font-bold">
-          <RiFileAddLine className="text-[var(--aurora-2)]" /> New Report
-        </Button>
-        <Button variant="glass" size="sm" className="px-4 font-bold">
-          <RiRocketLine className="text-[var(--aurora-4)]" /> Launch Campaign
+        <Button as="a" href="/upload" variant="blue" size="lg" className="w-full md:w-auto">
+          <RiUploadCloud2Line /> Upload New File
         </Button>
       </motion.div>
-
       {/* Storage, Bandwidth & Account */}
       <motion.section
         className="mb-8"
@@ -269,67 +257,90 @@ const Dashboard = () => {
         initial="hidden"
         animate="visible"
       >
-        <div className="mb-5 flex items-end justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-bold">Account Overview</h2>
-            <p className="mt-1 text-sm text-[var(--text-secondary)]">Your current resource usage and membership status.</p>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-2.5 sm:gap-4 xl:grid-cols-4">
           <motion.div variants={itemVariants}>
-            <Card className="h-full overflow-hidden" padding="sm" overflow="visible">
+            <Card className="h-full min-h-36 overflow-hidden p-3 sm:min-h-0 sm:p-4" padding="sm" overflow="visible">
               <div className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-blue-500/10 blur-2xl" />
-              <div className="relative mb-3 flex items-center justify-between">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-500/10 text-base text-blue-500">
-                  <RiHardDrive2Line />
+              <div className="relative mb-3 flex items-center justify-between gap-2 sm:mb-4">
+                <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 text-base text-blue-500 sm:h-10 sm:w-10 sm:rounded-xl sm:text-lg">
+                    <RiHardDrive2Line />
+                  </div>
+                  <CardDescription className="text-sm font-bold text-[var(--text-primary)] sm:text-lg">Storage</CardDescription>
                 </div>
-                <Badge color="primary" rounded="full" size="xs">36% used</Badge>
+                <Badge color="primary" rounded="full" size="xs" className="hidden sm:inline-flex">36% used</Badge>
               </div>
-              <CardDescription className="relative text-[10px] font-bold uppercase tracking-widest">Storage</CardDescription>
               <div className="relative mt-1 flex items-end gap-1.5">
-                <span className="font-mono text-xl font-bold">72.4GB</span>
-                <span className="mb-0.5 text-[11px] font-semibold text-[var(--text-secondary)]">of 200GB</span>
+                <span className="font-mono text-lg font-bold sm:text-2xl">72.4GB</span>
+                <span className="mb-0.5 text-[10px] font-semibold text-[var(--text-secondary)] sm:mb-1 sm:text-xs">/ 200GB</span>
               </div>
-              <Progress value={72.4} max={200} variant="aurora" size="sm" className="relative mt-3" />
-              <p className="relative mt-2 text-[11px] text-[var(--text-secondary)]">127.6GB available</p>
+              <Progress value={72.4} max={200} variant="aurora" size="sm" className="relative mt-2.5 sm:mt-3" />
+              <p className="relative mt-1.5 text-[10px] text-[var(--text-secondary)] sm:mt-2 sm:text-[11px]">127.6GB available</p>
             </Card>
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <Card className="h-full overflow-hidden" padding="sm" overflow="visible">
+            <Card className="h-full min-h-36 overflow-hidden p-3 sm:min-h-0 sm:p-4" padding="sm" overflow="visible">
               <div className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-amber-500/10 blur-2xl" />
-              <div className="relative mb-3 flex items-center justify-between">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/10 text-base text-amber-500">
-                  <RiSpeedUpLine />
+              <div className="relative mb-3 flex items-center justify-between gap-2 sm:mb-4">
+                <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 text-base text-amber-500 sm:h-10 sm:w-10 sm:rounded-xl sm:text-lg">
+                    <RiSpeedUpLine />
+                  </div>
+                  <CardDescription className="text-sm font-bold leading-tight text-[var(--text-primary)] sm:text-lg">Bandwidth</CardDescription>
                 </div>
-                <Badge color="warning" rounded="full" size="xs">Free user</Badge>
+                <Badge color="warning" rounded="full" size="xs" className="hidden sm:inline-flex">Free user</Badge>
               </div>
-              <CardDescription className="relative text-[10px] font-bold uppercase tracking-widest">Bandwidth</CardDescription>
-              <p className="relative mt-1 text-xl font-bold">Unlimited</p>
-              <div className="relative mt-3 flex items-center justify-between rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-amber-500">Speed</span>
-                <span className="font-mono text-xs font-bold">100kbps</span>
+              <p className="relative mt-1 text-lg font-bold sm:text-2xl">Unlimited</p>
+              <div className="relative mt-2.5 flex items-center justify-between rounded-lg border border-amber-500/20 bg-amber-500/5 px-2 py-2 sm:mt-3 sm:px-3">
+                <span className="text-[9px] font-bold uppercase tracking-wider text-amber-500 sm:text-[10px] sm:tracking-widest">Speed</span>
+                <span className="font-mono text-[10px] font-bold sm:text-xs">100kbps</span>
               </div>
             </Card>
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <Card className="h-full overflow-hidden" padding="sm" overflow="visible">
+            <Card className="h-full min-h-36 overflow-hidden p-3 sm:min-h-0 sm:p-4" padding="sm" overflow="visible">
               <div className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-emerald-500/10 blur-2xl" />
-              <div className="relative mb-3 flex items-center justify-between">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-base text-emerald-500">
-                  <RiVipCrown2Line />
+              <div className="relative mb-3 flex items-center justify-between gap-2 sm:mb-4">
+                <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-base text-emerald-500 sm:h-10 sm:w-10 sm:rounded-xl sm:text-lg">
+                    <RiVipCrown2Line />
+                  </div>
+                  <CardDescription className="text-sm font-bold leading-tight text-[var(--text-primary)] sm:text-lg">Account</CardDescription>
                 </div>
-                <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-500">
+                <span className="hidden items-center gap-1.5 text-xs font-bold text-emerald-500 sm:flex">
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Active
                 </span>
               </div>
-              <CardDescription className="relative text-[10px] font-bold uppercase tracking-widest">Account Status</CardDescription>
-              <p className="relative mt-1 text-xl font-bold">Free Plan</p>
-              <div className="relative mt-3 flex items-center justify-between rounded-lg border border-[var(--glass-border)] bg-[var(--bg-primary)]/60 px-3 py-2">
-                <span className="text-[11px] text-[var(--text-secondary)]">Duration</span>
-                <span className="text-xs font-bold">No expiration</span>
+              <p className="relative mt-1 text-lg font-bold sm:text-2xl">Free Plan</p>
+              <div className="relative mt-2.5 flex flex-row rounded-lg border border-[var(--glass-border)] bg-[var(--bg-primary)]/60 px-2 py-2 sm:mt-3 items-center justify-between sm:px-3">
+                <span className="text-[9px] text-[var(--text-secondary)] sm:text-[11px]">Duration</span>
+                <span className="text-[10px] font-bold sm:text-xs">No expiration</span>
+              </div>
+            </Card>
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <Card className="h-full min-h-36 overflow-hidden p-3 sm:min-h-0 sm:p-4" padding="sm" overflow="visible">
+              <div className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full bg-violet-500/10 blur-2xl" />
+              <div className="relative mb-3 flex items-center justify-between gap-2 sm:mb-4">
+                <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-violet-500/10 text-base text-violet-500 sm:h-10 sm:w-10 sm:rounded-xl sm:text-lg">
+                    <RiFileList3Line />
+                  </div>
+                  <CardDescription className="text-sm font-bold text-[var(--text-primary)] sm:text-lg">Files</CardDescription>
+                </div>
+                <Badge color="info" rounded="full" size="xs" className="hidden sm:inline-flex">312 public</Badge>
+              </div>
+              <div className="relative mt-1 flex items-end gap-1.5">
+                <span className="font-mono text-lg font-bold sm:text-2xl">1,248</span>
+                <span className="mb-0.5 text-[10px] font-semibold text-[var(--text-secondary)] sm:mb-1 sm:text-xs">total</span>
+              </div>
+              <div className="relative mt-2.5 flex flex-row rounded-lg border border-[var(--glass-border)] bg-[var(--bg-primary)]/60 px-2 py-2 sm:mt-3 items-center justify-between sm:px-3">
+                <span className="text-[9px] text-[var(--text-secondary)] sm:text-[11px]">Public files</span>
+                <span className="text-[10px] font-bold sm:text-xs">312</span>
               </div>
             </Card>
           </motion.div>
@@ -394,7 +405,7 @@ const Dashboard = () => {
           </Card>
         </motion.div>
       </motion.div>
-     
+
     </div>
   );
 };
