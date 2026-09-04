@@ -45,6 +45,7 @@ import {
 } from '../components/ui/Dropdown';
 import { Progress } from '../components/ui/Progress';
 import MyAccount from '../components/dashboard/MyAccount';
+import { mockDashboardCharts, mockDashboardStats, mockUser } from '../data/mockData';
 
 const colorConfigs = {
   aurora: {
@@ -112,7 +113,7 @@ const Dashboard = () => {
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15'],
+      data: mockDashboardCharts.revenueDays,
       axisLabel: { color: textColor },
       axisLine: { lineStyle: { color: axisColor } }
     },
@@ -134,7 +135,7 @@ const Dashboard = () => {
             colorStops: [{ offset: 0, color: '#4f46e5' }, { offset: 1, color: 'rgba(79, 70, 229, 0)' }]
           }
         },
-        data: [12, 14, 18, 15, 22, 28, 30, 26, 35, 42, 38, 45, 52, 50, 60]
+        data: mockDashboardCharts.revenueValues
       }
     ]
   };
@@ -162,7 +163,7 @@ const Dashboard = () => {
           offsetCenter: [0, '-10%'], fontSize: 30, fontWeight: 'bolder', color: textColor,
           formatter: '{value}%'
         },
-        data: [{ value: 94 }]
+        data: [{ value: mockDashboardCharts.performance }]
       }
     ]
   };
@@ -178,30 +179,10 @@ const Dashboard = () => {
         name: 'Uptime', type: 'line', smooth: true, symbol: 'none',
         lineStyle: { width: 2, color: '#10b981' },
         areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: '#10b981' }, { offset: 1, color: 'transparent' }] } },
-        data: Array.from({ length: 30 }, (_, index) => 99.5 + ((index * 17) % 50) / 100)
+        data: mockDashboardCharts.uptimeValues
       }
     ]
   };
-
-  const tasksData = [
-    { title: 'Update Authentication Flow', status: 'In Progress', priority: 'High', time: '2 hours ago' },
-    { title: 'Prepare Q3 Board Deck', status: 'Pending', priority: 'High', time: '5 hours ago' },
-    { title: 'Database Migration Script', status: 'Completed', priority: 'Medium', time: '1 day ago' },
-    { title: 'Design System Audit', status: 'Completed', priority: 'Low', time: '1 day ago' }
-  ];
-
-  const recentTransactions = [
-    { name: 'Enterprise Plan - Acme Corp', amount: '+$2,400.00', status: 'Success', date: 'Today, 2:45 PM' },
-    { name: 'AWS Cloud Services', amount: '-$840.50', status: 'Processed', date: 'Today, 10:20 AM' },
-    { name: 'Professional Plan - Globex', amount: '+$490.00', status: 'Success', date: 'Yesterday' },
-  ];
-
-  const activityTimeline = [
-    { event: 'New user registered', details: 'sarah@globex.com joined the platform.', time: '10 min ago', color: 'bg-[var(--aurora-1)]' },
-    { event: 'Server Backup Complete', details: 'Database snapshot successfully stored in US-East.', time: '45 min ago', color: 'bg-emerald-500' },
-    { event: 'Payment Failed', details: 'Stripe webhook returned code 402 for Client X.', time: '2 hrs ago', color: 'bg-rose-500' },
-    { event: 'Deploy Successful', details: 'v2.0.4 pushed to production via GitHub Actions.', time: '5 hrs ago', color: 'bg-[var(--aurora-2)]' },
-  ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -229,7 +210,7 @@ const Dashboard = () => {
               <RiFireLine />
             </div>
             <div>
-              <h2 className="text-base font-bold">Welcome back, Alexander!</h2>
+              <h2 className="text-base font-bold">Welcome back, {mockUser.name}!</h2>
               <p className="text-xs text-[var(--text-secondary)]">Your account is ready to manage.</p>
             </div>
           </div>
@@ -243,7 +224,7 @@ const Dashboard = () => {
       >
         <div>
           <h1 className="text-2xl md:text-3xl font-bold mb-2 tracking-tight">
-            Welcome back, Alexander! <RiFireLine className="inline-block text-orange-500 animate-pulse pb-1" />
+            Welcome back, {mockUser.name}! <RiFireLine className="inline-block text-orange-500 animate-pulse pb-1" />
           </h1>
         </div>
         <Button as="a" href="/upload" variant="blue" size="lg" className="w-full md:w-auto">
@@ -269,14 +250,14 @@ const Dashboard = () => {
                   </div>
                   <CardDescription className="text-sm font-bold text-[var(--text-primary)] sm:text-lg">Storage</CardDescription>
                 </div>
-                <Badge color="primary" rounded="full" size="xs" className="hidden sm:inline-flex">36% used</Badge>
+                <Badge color="primary" rounded="full" size="xs" className="hidden sm:inline-flex">{mockDashboardStats.storage.percentUsed}% used</Badge>
               </div>
               <div className="relative mt-1 flex items-end gap-1.5">
-                <span className="font-mono text-lg font-bold sm:text-2xl">72.4GB</span>
-                <span className="mb-0.5 text-[10px] font-semibold text-[var(--text-secondary)] sm:mb-1 sm:text-xs">/ 200GB</span>
+                <span className="font-mono text-lg font-bold sm:text-2xl">{mockDashboardStats.storage.used}{mockDashboardStats.storage.unit}</span>
+                <span className="mb-0.5 text-[10px] font-semibold text-[var(--text-secondary)] sm:mb-1 sm:text-xs">/ {mockDashboardStats.storage.total}{mockDashboardStats.storage.unit}</span>
               </div>
-              <Progress value={72.4} max={200} variant="aurora" size="sm" className="relative mt-2.5 sm:mt-3" />
-              <p className="relative mt-1.5 text-[10px] text-[var(--text-secondary)] sm:mt-2 sm:text-[11px]">127.6GB available</p>
+              <Progress value={mockDashboardStats.storage.used} max={mockDashboardStats.storage.total} variant="aurora" size="sm" className="relative mt-2.5 sm:mt-3" />
+              <p className="relative mt-1.5 text-[10px] text-[var(--text-secondary)] sm:mt-2 sm:text-[11px]">{mockDashboardStats.storage.available}{mockDashboardStats.storage.unit} available</p>
             </Card>
           </motion.div>
 
@@ -290,12 +271,12 @@ const Dashboard = () => {
                   </div>
                   <CardDescription className="text-sm font-bold leading-tight text-[var(--text-primary)] sm:text-lg">Bandwidth</CardDescription>
                 </div>
-                <Badge color="warning" rounded="full" size="xs" className="hidden sm:inline-flex">Free user</Badge>
+                <Badge color="warning" rounded="full" size="xs" className="hidden sm:inline-flex">{mockUser.plan}</Badge>
               </div>
-              <p className="relative mt-1 text-lg font-bold sm:text-2xl">Unlimited</p>
+              <p className="relative mt-1 text-lg font-bold sm:text-2xl">{mockDashboardStats.bandwidth.limit}</p>
               <div className="relative mt-2.5 flex items-center justify-between rounded-lg border border-amber-500/20 bg-amber-500/5 px-2 py-2 sm:mt-3 sm:px-3">
                 <span className="text-[9px] font-bold uppercase tracking-wider text-amber-500 sm:text-[10px] sm:tracking-widest">Speed</span>
-                <span className="font-mono text-[10px] font-bold sm:text-xs">100kbps</span>
+                <span className="font-mono text-[10px] font-bold sm:text-xs">{mockDashboardStats.bandwidth.speed}</span>
               </div>
             </Card>
           </motion.div>
@@ -311,13 +292,13 @@ const Dashboard = () => {
                   <CardDescription className="text-sm font-bold leading-tight text-[var(--text-primary)] sm:text-lg">Account</CardDescription>
                 </div>
                 <span className="hidden items-center gap-1.5 text-xs font-bold text-emerald-500 sm:flex">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Active
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> {mockDashboardStats.account.status}
                 </span>
               </div>
-              <p className="relative mt-1 text-lg font-bold sm:text-2xl">Free Plan</p>
+              <p className="relative mt-1 text-lg font-bold sm:text-2xl">{mockUser.plan}</p>
               <div className="relative mt-2.5 flex flex-row rounded-lg border border-[var(--glass-border)] bg-[var(--bg-primary)]/60 px-2 py-2 sm:mt-3 items-center justify-between sm:px-3">
                 <span className="text-[9px] text-[var(--text-secondary)] sm:text-[11px]">Duration</span>
-                <span className="text-[10px] font-bold sm:text-xs">No expiration</span>
+                <span className="text-[10px] font-bold sm:text-xs">{mockDashboardStats.account.duration}</span>
               </div>
             </Card>
           </motion.div>
@@ -332,15 +313,15 @@ const Dashboard = () => {
                   </div>
                   <CardDescription className="text-sm font-bold text-[var(--text-primary)] sm:text-lg">Files</CardDescription>
                 </div>
-                <Badge color="info" rounded="full" size="xs" className="hidden sm:inline-flex">312 public</Badge>
+                <Badge color="info" rounded="full" size="xs" className="hidden sm:inline-flex">{mockDashboardStats.files.public} public</Badge>
               </div>
               <div className="relative mt-1 flex items-end gap-1.5">
-                <span className="font-mono text-lg font-bold sm:text-2xl">1,248</span>
+                <span className="font-mono text-lg font-bold sm:text-2xl">{mockDashboardStats.files.total.toLocaleString()}</span>
                 <span className="mb-0.5 text-[10px] font-semibold text-[var(--text-secondary)] sm:mb-1 sm:text-xs">total</span>
               </div>
               <div className="relative mt-2.5 flex flex-row rounded-lg border border-[var(--glass-border)] bg-[var(--bg-primary)]/60 px-2 py-2 sm:mt-3 items-center justify-between sm:px-3">
                 <span className="text-[9px] text-[var(--text-secondary)] sm:text-[11px]">Public files</span>
-                <span className="text-[10px] font-bold sm:text-xs">312</span>
+                <span className="text-[10px] font-bold sm:text-xs">{mockDashboardStats.files.public}</span>
               </div>
             </Card>
           </motion.div>

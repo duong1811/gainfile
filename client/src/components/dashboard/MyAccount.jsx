@@ -27,43 +27,25 @@ import { Modal, ModalBody, ModalFooter } from '../ui/Modal';
 import { Select } from '../ui/Select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/Tabs';
 import { Textarea } from '../ui/Textarea';
-
-const initialProfile = {
-  name: 'Alexander Pierce',
-  email: 'alexander@gainfile.com',
-};
-
-const accountActivity = [
-  {
-    title: 'Signed in successfully',
-    detail: 'Chrome on macOS · Ho Chi Minh City, Vietnam',
-    date: 'Today, 09:42 AM',
-    icon: RiComputerLine,
-  },
-  {
-    title: 'Signed in successfully',
-    detail: 'Safari on iPhone · Ho Chi Minh City, Vietnam',
-    date: 'Yesterday, 06:15 PM',
-    icon: RiSmartphoneLine,
-  },
-  {
-    title: 'Account password updated',
-    detail: 'Security information changed',
-    date: 'August 12, 2026',
-    icon: RiShieldCheckLine,
-  },
-];
-
-const initialTickets = [
-  { id: 'GF-1048', subject: 'Video processing is taking too long', category: 'Video Processing', status: 'Open', updated: '10 minutes ago' },
-  { id: 'GF-1041', subject: 'Payment completed but Premium is inactive', category: 'Billing', status: 'In Progress', updated: '2 hours ago' },
-  { id: 'GF-1017', subject: 'How can I update my account email?', category: 'Account', status: 'Resolved', updated: 'August 26, 2026' },
-];
+import {
+  mockAccountActivity,
+  mockDashboardStats,
+  mockSupportTickets,
+  mockUser,
+} from '../../data/mockData';
 
 const ticketStatusColors = {
   Open: 'primary',
   'In Progress': 'warning',
+  Waiting: 'info',
   Resolved: 'success',
+  Closed: 'neutral',
+};
+
+const activityIcons = {
+  computer: RiComputerLine,
+  phone: RiSmartphoneLine,
+  security: RiShieldCheckLine,
 };
 
 const Field = ({ label, children }) => (
@@ -74,15 +56,15 @@ const Field = ({ label, children }) => (
 );
 
 const MyAccount = () => {
-  const [profile, setProfile] = useState(initialProfile);
-  const [profileDraft, setProfileDraft] = useState(initialProfile);
+  const [profile, setProfile] = useState({ name: mockUser.name, email: mockUser.email });
+  const [profileDraft, setProfileDraft] = useState({ name: mockUser.name, email: mockUser.email });
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [passwords, setPasswords] = useState({ current: '', next: '', confirm: '' });
   const [passwordError, setPasswordError] = useState('');
   const [notice, setNotice] = useState('');
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
-  const [tickets, setTickets] = useState(initialTickets);
+  const [tickets, setTickets] = useState(mockSupportTickets);
   const [showTickets, setShowTickets] = useState(false);
   const [ticketModalOpen, setTicketModalOpen] = useState(false);
   const [ticketForm, setTicketForm] = useState({
@@ -182,19 +164,19 @@ const MyAccount = () => {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="rounded-xl border border-[var(--glass-border)] p-4">
                 <p className="text-xs text-[var(--text-secondary)]">Account ID</p>
-                <p className="mt-1 font-mono text-sm font-bold">GF-2026-1048</p>
+                <p className="mt-1 font-mono text-sm font-bold">{mockUser.accountId}</p>
               </div>
               <div className="rounded-xl border border-[var(--glass-border)] p-4">
                 <p className="text-xs text-[var(--text-secondary)]">Member since</p>
-                <p className="mt-1 text-sm font-bold">August 30, 2026</p>
+                <p className="mt-1 text-sm font-bold">{mockUser.memberSince}</p>
               </div>
               <div className="rounded-xl border border-[var(--glass-border)] p-4">
                 <p className="text-xs text-[var(--text-secondary)]">Language</p>
-                <p className="mt-1 text-sm font-bold">English</p>
+                <p className="mt-1 text-sm font-bold">{mockUser.language}</p>
               </div>
               <div className="rounded-xl border border-[var(--glass-border)] p-4">
                 <p className="text-xs text-[var(--text-secondary)]">Time zone</p>
-                <p className="mt-1 text-sm font-bold">UTC+07:00</p>
+                <p className="mt-1 text-sm font-bold">{mockUser.timeZone}</p>
               </div>
             </div>
           </Card>
@@ -205,20 +187,20 @@ const MyAccount = () => {
             <div className="flex flex-col gap-6 border-b border-[var(--glass-border)] pb-6 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <Badge variant="soft" color="neutral" size="sm">Free account</Badge>
-                <CardTitle className="mt-3">Free Plan</CardTitle>
-                <CardDescription className="mt-2">200GB storage with unlimited bandwidth at 100kbps.</CardDescription>
+                <CardTitle className="mt-3">{mockUser.plan}</CardTitle>
+                <CardDescription className="mt-2">{mockDashboardStats.storage.total}{mockDashboardStats.storage.unit} storage with {mockDashboardStats.bandwidth.limit.toLowerCase()} bandwidth at {mockDashboardStats.bandwidth.speed}.</CardDescription>
               </div>
               <Button variant="primary" size="lg" as="a" href="/upgrade-plan"><RiVipCrown2Line /> Upgrade Plan</Button>
             </div>
             <div className="mt-6">
               <div className="mb-2 flex items-center justify-between text-sm">
                 <span className="font-bold">Storage used</span>
-                <span className="text-[var(--text-secondary)]">72.4GB of 200GB</span>
+                <span className="text-[var(--text-secondary)]">{mockDashboardStats.storage.used}{mockDashboardStats.storage.unit} of {mockDashboardStats.storage.total}{mockDashboardStats.storage.unit}</span>
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-[var(--glass-border)]">
-                <div className="h-full w-[36.2%] rounded-full bg-gradient-to-r from-[var(--aurora-1)] to-[var(--aurora-2)]" />
+                <div className="h-full rounded-full bg-gradient-to-r from-[var(--aurora-1)] to-[var(--aurora-2)]" style={{ width: `${mockDashboardStats.storage.percentUsed}%` }} />
               </div>
-              <p className="mt-3 text-xs text-[var(--text-secondary)]">127.6GB storage available. Free accounts do not expire.</p>
+              <p className="mt-3 text-xs text-[var(--text-secondary)]">{mockDashboardStats.storage.available}{mockDashboardStats.storage.unit} storage available. Free accounts do not expire.</p>
             </div>
           </Card>
         </TabsContent>
@@ -260,16 +242,19 @@ const MyAccount = () => {
               <Badge variant="soft" color="success" size="sm">No suspicious activity</Badge>
             </div>
             <div className="mt-6 space-y-3">
-              {accountActivity.map(({ title, detail, date, icon: Icon }) => (
+              {mockAccountActivity.map(({ title, detail, date, device }) => {
+                const ActivityIcon = activityIcons[device];
+                return (
                 <div key={`${title}-${date}`} className="flex items-start gap-3 rounded-xl border border-[var(--glass-border)] p-4">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--aurora-1)]/10 text-[var(--aurora-1)]"><Icon /></span>
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--aurora-1)]/10 text-[var(--aurora-1)]"><ActivityIcon /></span>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-bold">{title}</p>
                     <p className="mt-1 flex items-center gap-1 text-xs text-[var(--text-secondary)]"><RiMapPinLine /> {detail}</p>
                   </div>
                   <span className="shrink-0 text-right text-xs text-[var(--text-secondary)]">{date}</span>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </Card>
         </TabsContent>
@@ -281,7 +266,7 @@ const MyAccount = () => {
             <div className="mt-7 rounded-2xl border border-dashed border-[var(--glass-border)] p-10 text-center">
               <RiShoppingBag3Line className="mx-auto text-3xl text-[var(--text-secondary)]" />
               <p className="mt-3 font-bold">No purchases yet</p>
-              <p className="mt-1 text-sm text-[var(--text-secondary)]">Your account is currently on the Free Plan.</p>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">Your account is currently on the {mockUser.plan}.</p>
               <Button variant="primary" size="sm" as="a" href="/upgrade-plan" className="mt-5">View Premium Plans</Button>
             </div>
           </Card>
@@ -331,12 +316,12 @@ const MyAccount = () => {
                   </div>
                   <Button type="button" variant="ghost" size="sm" onClick={() => setShowTickets(false)}>Hide List</Button>
                 </div>
-                <div className="divide-y divide-[var(--glass-border)]">
+                <div className="custom-scrollbar max-h-[154px] divide-y divide-[var(--glass-border)] overflow-y-auto">
                   {tickets.map((ticket) => (
                     <a
                       key={ticket.id}
                       href={`/tickets/${ticket.id}`}
-                      className="flex flex-col gap-3 p-4 transition-colors hover:bg-[var(--glass-border)]/40 sm:flex-row sm:items-center"
+                      className="flex min-h-[76px] items-center gap-3 p-4 transition-colors hover:bg-[var(--glass-border)]/40"
                     >
                       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--aurora-1)]/10 text-[var(--aurora-1)]"><RiTicket2Line /></span>
                       <div className="min-w-0 flex-1">

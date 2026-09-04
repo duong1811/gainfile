@@ -17,47 +17,9 @@ import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { Progress } from '../ui/Progress';
 import { Textarea } from '../ui/Textarea';
+import { mockRemoteTransfers } from '../../data/mockData';
 
 const MAX_URLS_PER_BATCH = 20;
-
-const exampleTransfers = [
-  {
-    id: 'example-completed',
-    name: 'brand-assets.zip',
-    source: 'https://cdn.example.com/brand-assets.zip',
-    size: '428 MB',
-    status: 'completed',
-    progress: 100,
-    detail: 'Imported in 18 seconds',
-  },
-  {
-    id: 'example-transferring',
-    name: 'product-launch.mp4',
-    source: 'https://media.example.com/product-launch.mp4',
-    size: '1.8 GB',
-    status: 'transferring',
-    progress: 64,
-    detail: '12.4 MB/s · About 42 seconds left',
-  },
-  {
-    id: 'example-pending',
-    name: 'quarterly-report.pdf',
-    source: 'https://files.example.com/quarterly-report.pdf',
-    size: '12.6 MB',
-    status: 'pending',
-    progress: 0,
-    detail: 'Waiting for an available transfer slot',
-  },
-  {
-    id: 'example-failed',
-    name: 'private-archive.zip',
-    source: 'https://example.com/private-archive.zip',
-    size: 'Unknown',
-    status: 'failed',
-    progress: 0,
-    detail: 'Access denied by the remote server (403)',
-  },
-];
 
 const statusMeta = {
   pending: { label: 'pending', icon: RiTimeLine, color: 'neutral', progress: 'default' },
@@ -80,7 +42,7 @@ const getFileName = (value) => {
 
 const RemoteUrlUpload = () => {
   const [value, setValue] = useState('');
-  const [transfers, setTransfers] = useState(exampleTransfers);
+  const [transfers, setTransfers] = useState(mockRemoteTransfers);
   const incomingUrls = [...new Set(value.split(/\r?\n/).map((url) => url.trim()).filter(Boolean))];
   const exceedsBatchLimit = incomingUrls.length > MAX_URLS_PER_BATCH;
 

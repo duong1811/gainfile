@@ -24,14 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from '../components/ui/Table';
-
-const initialTickets = [
-  { id: 'GF-1048', subject: 'Video processing is taking too long', category: 'Video Processing', status: 'Open', priority: 'High', updated: '10 minutes ago' },
-  { id: 'GF-1041', subject: 'Payment completed but Premium is inactive', category: 'Billing', status: 'In Progress', priority: 'Urgent', updated: '2 hours ago' },
-  { id: 'GF-1029', subject: 'Remote URL upload failed', category: 'Upload', status: 'Waiting', priority: 'Normal', updated: 'Yesterday' },
-  { id: 'GF-1017', subject: 'How can I update my account email?', category: 'Account', status: 'Resolved', priority: 'Low', updated: 'August 26, 2026' },
-  { id: 'GF-1003', subject: 'Unable to play embedded video', category: 'Playback', status: 'Closed', priority: 'Normal', updated: 'August 21, 2026' },
-];
+import { mockSupportTickets } from '../data/mockData';
 
 const statusColors = {
   Open: 'primary',
@@ -50,7 +43,7 @@ const priorityClasses = {
 
 const SupportTickets = () => {
   const router = useRouter();
-  const [tickets, setTickets] = useState(initialTickets);
+  const [tickets, setTickets] = useState(mockSupportTickets);
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('all');
   const [isCreateOpen, setIsCreateOpen] = useState(false);

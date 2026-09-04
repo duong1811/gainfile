@@ -20,6 +20,12 @@ import {
   TabsTrigger,
   TabsContent,
 } from '../components/ui/Tabs';
+import {
+  mockCheckoutData,
+  mockDashboardStats,
+  mockSettingsData,
+  mockUser,
+} from '../data/mockData';
 
 const Settings = () => {
   const [reminders, setReminders] = useState(true);
@@ -61,7 +67,7 @@ const Settings = () => {
               <h3 className="text-2xl font-bold mb-6 font-outfit">Personal Profile</h3>
               <div className="flex items-center gap-6 mb-8 border-b border-[var(--glass-border)] pb-8">
                 <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[var(--aurora-1)] to-[var(--aurora-2)] flex items-center justify-center text-4xl font-bold text-white shadow-xl shadow-[var(--aurora-1)]/20">
-                  A
+                  {mockUser.name.charAt(0)}
                 </div>
                 <div>
                   <Button variant="glass" size="sm" className="font-bold mb-2">Upload Avatar</Button>
@@ -72,15 +78,15 @@ const Settings = () => {
               <div className="grid grid-cols-2 gap-6">
                 <div>
                   <Label>First Name</Label>
-                  <Input defaultValue="Alexander" variant="aurora1" />
+                  <Input defaultValue={mockSettingsData.profile.firstName} variant="aurora1" />
                 </div>
                 <div>
                   <Label>Last Name</Label>
-                  <Input defaultValue="Pierce" variant="aurora1" />
+                  <Input defaultValue={mockSettingsData.profile.lastName} variant="aurora1" />
                 </div>
                 <div className="col-span-2">
                   <Label>Email Address</Label>
-                  <Input type="email" defaultValue="alexander@trackify.app" variant="aurora1" />
+                  <Input type="email" defaultValue={mockUser.email} variant="aurora1" />
                 </div>
               </div>
             </Card>
@@ -92,17 +98,17 @@ const Settings = () => {
               <div className="space-y-6">
                 <div>
                   <Label>Tenant ID</Label>
-                  <Input disabled defaultValue="tnt_x98f23nkd" className="text-[var(--text-secondary)] cursor-not-allowed opacity-50 font-mono text-sm" />
+                  <Input disabled defaultValue={mockSettingsData.workspace.id} className="text-[var(--text-secondary)] cursor-not-allowed opacity-50 font-mono text-sm" />
                 </div>
                 <div>
                   <Label>Company Name</Label>
-                  <Input defaultValue="Acme Corporation" variant="aurora2" />
+                  <Input defaultValue={mockSettingsData.workspace.name} variant="aurora2" />
                 </div>
                 <div>
                   <Label>Timezone</Label>
                   <Select variant="aurora2">
+                    <option value="utc7" className="bg-[var(--bg-primary)]">{mockSettingsData.workspace.timeZone}</option>
                     <option value="pt" className="bg-[var(--bg-primary)]">Pacific Time (PT) - Los Angeles</option>
-                    <option value="et" className="bg-[var(--bg-primary)]">Eastern Time (ET) - New York</option>
                     <option value="gmt" className="bg-[var(--bg-primary)]">Greenwich Mean Time (GMT) - London</option>
                   </Select>
                 </div>
@@ -127,9 +133,9 @@ const Settings = () => {
 
               <div className="relative overflow-hidden rounded-2xl border border-[var(--aurora-1)] p-6 bg-gradient-to-br from-[var(--aurora-1)]/10 to-transparent mb-8">
                 <p className="text-[var(--aurora-1)] font-bold uppercase tracking-widest text-xs mb-2">Current Plan</p>
-                <p className="text-4xl font-bold font-outfit mb-2">Professional Tier</p>
-                <p className="text-[var(--text-secondary)] mb-6">Up to 50 users. Renews on Oct 24, {new Date().getFullYear()}.</p>
-                <Button variant="primary" size="sm">Manage on Stripe</Button>
+                <p className="text-4xl font-bold font-outfit mb-2">{mockUser.plan}</p>
+                <p className="text-[var(--text-secondary)] mb-6">{mockDashboardStats.storage.total}{mockDashboardStats.storage.unit} storage · {mockDashboardStats.bandwidth.limit} bandwidth at {mockDashboardStats.bandwidth.speed}.</p>
+                <Button as="a" href="/upgrade-plan" variant="primary" size="sm">View Premium Plans</Button>
               </div>
 
               <h4 className="font-bold mb-4 font-outfit">Payment Methods</h4>
@@ -137,8 +143,8 @@ const Settings = () => {
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-8 rounded bg-[var(--glass-border)] flex items-center justify-center font-bold text-xs">VISA</div>
                   <div>
-                    <p className="font-bold">•••• •••• •••• 4242</p>
-                    <p className="text-xs text-[var(--text-secondary)]">Expires 12/28</p>
+                    <p className="font-bold">•••• •••• •••• {mockCheckoutData.card.number.slice(-4)}</p>
+                    <p className="text-xs text-[var(--text-secondary)]">Expires {mockCheckoutData.card.expiry}</p>
                   </div>
                 </div>
                 <span className="text-xs font-bold text-[var(--text-secondary)] bg-[var(--glass-border)] px-3 py-1 rounded-full text-[var(--text-primary)]">Default</span>
@@ -157,14 +163,14 @@ const Settings = () => {
                   <Label className="flex justify-between">
                     Public Key
                   </Label>
-                  <Input readOnly value="pk_live_51M..." className="font-mono text-sm text-[var(--text-secondary)]" />
+                  <Input readOnly value={mockSettingsData.api.publicKey} className="font-mono text-sm text-[var(--text-secondary)]" />
                 </div>
                 <div>
                   <Label className="flex justify-between items-center">
                     Secret Key
                     <Button variant="ghost" size="xs" className="!text-[var(--aurora-1)] hover:underline normal-case px-0 h-auto">Reveal Key</Button>
                   </Label>
-                  <Input type="password" readOnly value="sk_live_51Mxxxxxxxxxxxxxxxxxx" className="font-mono text-sm text-[var(--text-secondary)]" />
+                  <Input type="password" readOnly value={mockSettingsData.api.secretKey} className="font-mono text-sm text-[var(--text-secondary)]" />
                 </div>
 
                 <div className="pt-6 border-t border-[var(--glass-border)]">

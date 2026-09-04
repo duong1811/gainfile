@@ -7,6 +7,7 @@ import {
   RiCheckLine,
   RiGift2Fill,
   RiLock2Line,
+  RiMailLine,
   RiSparkling2Line,
   RiVipCrown2Line,
 } from 'react-icons/ri';
@@ -19,6 +20,8 @@ const Deals = () => {
     Object.fromEntries(premiumPlanGroups.map((group) => [group.duration, 0]))
   );
   const [showLogin, setShowLogin] = useState(false);
+  const [pendingPaymentUrl, setPendingPaymentUrl] = useState('');
+  const [loginForm, setLoginForm] = useState({ email: '', password: '' });
 
   const handleBuy = (duration, plan) => {
     const query = new URLSearchParams({
@@ -38,7 +41,17 @@ const Deals = () => {
     if (typeof window !== 'undefined') {
       window.sessionStorage.setItem('gainfile-return-to', paymentUrl);
     }
+    setPendingPaymentUrl(paymentUrl);
     setShowLogin(true);
+  };
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    window.localStorage.setItem('gainfile-authenticated', 'true');
+    window.dispatchEvent(new Event('gainfile-auth-change'));
+    window.sessionStorage.removeItem('gainfile-return-to');
+    setShowLogin(false);
+    router.push(pendingPaymentUrl);
   };
 
   return (
@@ -175,19 +188,48 @@ const Deals = () => {
 
       {/* LOGIN MODAL */}
       <Modal isOpen={showLogin} onClose={() => setShowLogin(false)} title="Sign in to continue" size="sm" variant="aurora">
-        <div className="text-center">
+        <div>
           <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/10 text-2xl text-emerald-400">
             <RiLock2Line />
           </div>
-          <p className="text-sm leading-6 text-[var(--text-secondary)]">Sign in or create a Gainfile account to purchase this Premium plan.</p>
-          <div className="mt-6 grid gap-3">
-            <Link href="/login" className="rounded-xl bg-gradient-to-r from-[var(--aurora-1)] to-[var(--aurora-2)] px-5 py-3 text-sm font-bold text-white shadow-md shadow-[var(--aurora-1)]/20 hover:brightness-110">
-              Sign In
-            </Link>
-            <Link href="/register" className="rounded-xl border border-[var(--glass-border)] px-5 py-3 text-sm font-bold hover:bg-[var(--glass-border)]">
-              Create Account
-            </Link>
+          <p className="text-center text-sm leading-6 text-[var(--text-secondary)]">Sign in to your Gainfile account before continuing to secure checkout.</p>
+          <form onSubmit={handleLogin} className="mt-6 space-y-3">
+            <label className="relative block">
+              <RiMailLine className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
+              <input
+                required
+                type="email"
+                autoComplete="email"
+                value={loginForm.email}
+                onChange={(event) => setLoginForm((current) => ({ ...current, email: event.target.value }))}
+                placeholder="Email address"
+                className="w-full rounded-xl border border-[var(--glass-border)] bg-[var(--glass-border)] py-3 pl-11 pr-4 text-sm outline-none focus:border-[var(--aurora-1)]"
+              />
+            </label>
+            <label className="relative block">
+              <RiLock2Line className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]" />
+              <input
+                required
+                type="password"
+                autoComplete="current-password"
+                value={loginForm.password}
+                onChange={(event) => setLoginForm((current) => ({ ...current, password: event.target.value }))}
+                placeholder="Password"
+                className="w-full rounded-xl border border-[var(--glass-border)] bg-[var(--glass-border)] py-3 pl-11 pr-4 text-sm outline-none focus:border-[var(--aurora-1)]"
+              />
+            </label>
+            <button type="submit" className="w-full rounded-xl bg-gradient-to-r from-[var(--aurora-1)] to-[var(--aurora-2)] px-5 py-3 text-sm font-bold text-white shadow-md shadow-[var(--aurora-1)]/20 hover:brightness-110">
+              Sign In &amp; Continue
+            </button>
+          </form>
+          <div className="my-5 flex items-center gap-3">
+            <span className="h-px flex-1 bg-[var(--glass-border)]" />
+            <span className="text-xs text-[var(--text-secondary)]">New to Gainfile?</span>
+            <span className="h-px flex-1 bg-[var(--glass-border)]" />
           </div>
+          <Link href="/register" className="block rounded-xl border border-[var(--glass-border)] px-5 py-3 text-center text-sm font-bold hover:bg-[var(--glass-border)]">
+            Create Account
+          </Link>
         </div>
       </Modal>
     </div>

@@ -26,6 +26,7 @@ import {
   DropdownSeparator,
   DropdownHeader
 } from './ui/Dropdown';
+import { mockNotifications, mockUser } from '../data/mockData';
 
 const subscribeToAuth = (callback) => {
   window.addEventListener('storage', callback);
@@ -39,11 +40,6 @@ const subscribeToAuth = (callback) => {
 
 const getAuthSnapshot = () => window.localStorage.getItem('gainfile-authenticated') === 'true';
 const getServerAuthSnapshot = () => false;
-const currentUser = {
-  name: 'Alexander Pierce',
-  email: 'alexander@trackify.app',
-  plan: 'Professional',
-};
 
 const Topbar = ({ isHorizontalMenu = false, children = null }) => {
   const router = useRouter();
@@ -115,29 +111,29 @@ const Topbar = ({ isHorizontalMenu = false, children = null }) => {
                 <DropdownContent align={isRTL ? 'left' : 'right'} width="w-80" offset="mt-4">
                   <DropdownHeader className="flex justify-between items-center">
                     <h4 className="font-bold text-[var(--text-primary)]">Notifications</h4>
-                    <Badge variant="solid" color="aurora-solid" rounded="full" size="xs">2 New</Badge>
+                    <Badge variant="solid" color="aurora-solid" rounded="full" size="xs">{mockNotifications.length} New</Badge>
                   </DropdownHeader>
                   <div className="max-h-64 overflow-y-auto custom-scrollbar">
-                    <DropdownItem className="gap-3 py-4 border-b border-[var(--glass-border)]" closeOnSelect={false}>
-                      <div className="w-10 h-10 rounded-full bg-rose-500/10 text-rose-500 flex items-center justify-center flex-shrink-0">
-                        <RiInformationLine size={20} />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-[var(--text-primary)]">Goal Deadline Approaching</p>
-                        <p className="text-xs text-[var(--text-secondary)] mt-1 font-medium">Project alpha is due in 3 days.</p>
-                        <p className="text-[10px] text-[var(--aurora-1)] mt-2 font-bold uppercase tracking-wider">2 hours ago</p>
-                      </div>
-                    </DropdownItem>
-                    <DropdownItem className="gap-3 py-4" closeOnSelect={false}>
-                      <div className="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center flex-shrink-0">
-                        <RiSearchLine size={20} />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-[var(--text-primary)]">Weekly Report Ready</p>
-                        <p className="text-xs text-[var(--text-secondary)] mt-1 font-medium">Your productivity skyrocketed this week.</p>
-                        <p className="text-[10px] text-[var(--aurora-1)] mt-2 font-bold uppercase tracking-wider">1 day ago</p>
-                      </div>
-                    </DropdownItem>
+                    {mockNotifications.map((notification, index) => {
+                      const isSuccess = notification.type === 'success';
+                      const NotificationIcon = isSuccess ? RiSearchLine : RiInformationLine;
+                      return (
+                        <DropdownItem
+                          key={notification.id}
+                          className={`gap-3 py-4 ${index < mockNotifications.length - 1 ? 'border-b border-[var(--glass-border)]' : ''}`}
+                          closeOnSelect={false}
+                        >
+                          <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full ${isSuccess ? 'bg-emerald-500/10 text-emerald-500' : 'bg-blue-500/10 text-blue-500'}`}>
+                            <NotificationIcon size={20} />
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-[var(--text-primary)]">{notification.title}</p>
+                            <p className="mt-1 text-xs font-medium text-[var(--text-secondary)]">{notification.message}</p>
+                            <p className="mt-2 text-[10px] font-bold uppercase tracking-wider text-[var(--aurora-1)]">{notification.time}</p>
+                          </div>
+                        </DropdownItem>
+                      );
+                    })}
                   </div>
                   <DropdownSeparator />
                   <div className="p-2 text-center bg-[var(--dropdown-footer-bg)]">
@@ -151,7 +147,7 @@ const Topbar = ({ isHorizontalMenu = false, children = null }) => {
                 <DropdownTrigger asChild showChevron={false}>
                   <button
                     type="button"
-                    aria-label={`Open profile menu for ${currentUser.name}`}
+                    aria-label={`Open profile menu for ${mockUser.name}`}
                     className="ml-2 mr-2 flex cursor-pointer items-center gap-3 rounded-2xl p-1 transition-colors hover:bg-[var(--glass-border)]"
                   >
                     <span className="h-10 w-10 shrink-0 rounded-full bg-gradient-to-br from-[var(--aurora-1)] to-[var(--aurora-2)] p-[2px] transition-transform hover:scale-105">
@@ -162,10 +158,10 @@ const Topbar = ({ isHorizontalMenu = false, children = null }) => {
                     </span>
                     <span className="hidden min-w-0 text-left md:block">
                       <span className="block max-w-36 truncate text-sm font-bold leading-tight text-[var(--text-primary)]">
-                        {currentUser.name}
+                        {mockUser.name}
                       </span>
                       <span className="mt-0.5 block text-[10px] font-bold tracking-wider text-[var(--aurora-1)]">
-                        {currentUser.plan} plan
+                        {mockUser.plan}
                       </span>
                     </span>
 
@@ -173,9 +169,9 @@ const Topbar = ({ isHorizontalMenu = false, children = null }) => {
                 </DropdownTrigger>
                 <DropdownContent align={isRTL ? 'left' : 'right'} width="w-56" offset="mt-4">
                   <DropdownHeader>
-                    <p className="truncate font-bold text-[var(--text-primary)]">{currentUser.name}</p>
-                    <p className="mt-0.5 truncate text-[10px] font-bold tracking-widest text-[var(--text-secondary)]">{currentUser.email}</p>
-                    <p className="mt-2 text-[10px] font-bold tracking-widest text-[var(--aurora-1)]">{currentUser.plan} plan</p>
+                    <p className="truncate font-bold text-[var(--text-primary)]">{mockUser.name}</p>
+                    <p className="mt-0.5 truncate text-[10px] font-bold tracking-widest text-[var(--text-secondary)]">{mockUser.email}</p>
+                    <p className="mt-2 text-[10px] font-bold tracking-widest text-[var(--aurora-1)]">{mockUser.plan}</p>
                   </DropdownHeader>
                   <div className="p-1">
                     <DropdownItem onClick={() => router.push('/dashboard')} className="gap-2">
